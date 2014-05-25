@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SZDB</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="title_activity_ustawienia">UstawieniaActivity</string>
+    <string name="title_activity_dochody">DochodyActivity</string>
+    <string name="title_activity_wydatki">WydatkiActivity</string>
+    <string name="title_activity_plany">PlanyActivity</string>
+    <string name="title_activity_zestawienie">ZestawienieActivity</string>
+    <string name="buttonMain">Dalej</string>
+    <string name="buttonMenuZestawienie">Zestawienie</string>
+    <string name="buttonMenuPlanowanie">Planowanie</string>
+    <string name="buttonMenuDWydatki">Dodaj Wydatki</string>
+    <string name="buttonMenuDDochody">Dodaj Dochody</string>
+    <string name="buttonMenuWydatki">Wydatki</string>
+    <string name="buttonMenuDochody">Dochody</string>
+    <string name="buttonMenuUstawienia">Ustawienia</string>
+    <string name="title_activity_wydatki_dodaj">WydatkiDodajActivity</string>
+    <string name="title_activity_dochody_dodaj">DochodyDodajActivity</string>
+    <string name="buttonMenuClose">Zamknij</string>
+    <string name="textViewUstawienia">Podaj:</string>
+    <string name="hintUstawieniaOd">Podaj datę rozpoczęcia okresu</string>
+    <string name="hintUstawieniaDo">Podaj datę zakończenia okresu</string>
+    <string name="buttonUstawienia">Dodaj</string>
+
+</resources>

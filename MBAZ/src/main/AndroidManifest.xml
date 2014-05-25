@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="android.szdb.mbaz" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="android.szdb.mbaz.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="android.szdb.mbaz.MenuActivity"
+            android:label="@string/title_activity_menu" >
+        </activity>
+        <activity
+            android:name="android.szdb.mbaz.UstawieniaActivity"
+            android:label="@string/title_activity_ustawienia" >
+        </activity>
+        <activity
+            android:name="android.szdb.mbaz.DochodyActivity"
+            android:label="@string/title_activity_dochody" >
+        </activity>
+        <activity
+            android:name="android.szdb.mbaz.WydatkiActivity"
+            android:label="@string/title_activity_wydatki" >
+        </activity>
+        <activity
+            android:name="android.szdb.mbaz.PlanyActivity"
+            android:label="@string/title_activity_plany" >
+        </activity>
+        <activity
+            android:name="android.szdb.mbaz.ZestawienieActivity"
+            android:label="@string/title_activity_zestawienie" >
+        </activity>
+        <activity
+            android:name="android.szdb.mbaz.WydatkiDodajActivity"
+            android:label="@string/title_activity_wydatki_dodaj" >
+        </activity>
+        <activity
+            android:name="android.szdb.mbaz.DochodyDodajActivity"
+            android:label="@string/title_activity_dochody_dodaj" >
+        </activity>
+    </application>
+
+</manifest>
