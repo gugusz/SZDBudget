@@ -12,18 +12,18 @@ import java.util.List;
 public class CBazaSystem {
     private CDatabaseManager dbManager;
     private SQLiteDatabase dbOkres;
-    private SQLiteDatabase dbKDO;
-    private SQLiteDatabase dbDochody;
-    private SQLiteDatabase dbKWY;
-    private SQLiteDatabase dbWydatki;
-    private SQLiteDatabase dbSubkategoria;
+//    private SQLiteDatabase dbKDO;
+//    private SQLiteDatabase dbDochody;
+//    private SQLiteDatabase dbKWY;
+//    private SQLiteDatabase dbWydatki;
+//    private SQLiteDatabase dbSubkategoria;
 
     private String[] OKRES_REKORD = {CDatabaseManager.OKRES_ID, CDatabaseManager.OKRES_OD, CDatabaseManager.OKRES_DO};
-    private String[] KDO_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
-    private String[] DOCHODY_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
-    private String[] KWY_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
-    private String[] WYDATKI_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
-    private String[] SUBKATEGORIA_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
+//    private String[] KDO_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
+//    private String[] DOCHODY_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
+//    private String[] KWY_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
+//    private String[] WYDATKI_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
+//    private String[] SUBKATEGORIA_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
 
     public CBazaSystem(Context context){
         dbManager = new CDatabaseManager(context);
@@ -74,7 +74,7 @@ public class CBazaSystem {
         long id = okr.getOKRk_1_Id();
         dbOkres.delete(CDatabaseManager.TABLE_OKRES, CDatabaseManager.OKRES_ID + " = " + id, null);
     }
-
+/*
     //Zapytania związane z kategorią Dochodów
     private CKat_doch parseKDO(Cursor k){
         CKat_doch kdo = new CKat_doch();
@@ -191,4 +191,5 @@ public class CBazaSystem {
         long id = kwy.getKWYk_1_Id();
         dbKWY.delete(CDatabaseManager.TABLE_KWY, CDatabaseManager.KWY_ID + " = " + id, null);
     }
+    */
 }
