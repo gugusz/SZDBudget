@@ -12,18 +12,20 @@ import java.util.List;
 public class CBazaSystem {
     private CDatabaseManager dbManager;
     private SQLiteDatabase dbOkres;
-//    private SQLiteDatabase dbKDO;
-//    private SQLiteDatabase dbDochody;
-//    private SQLiteDatabase dbKWY;
-//    private SQLiteDatabase dbWydatki;
-//    private SQLiteDatabase dbSubkategoria;
+    private SQLiteDatabase dbKDO;
+    private SQLiteDatabase dbDochody;
+    private SQLiteDatabase dbSubkategoria;
+    private SQLiteDatabase dbKWY;
+    private SQLiteDatabase dbWydatki;
+
 
     private String[] OKRES_REKORD = {CDatabaseManager.OKRES_ID, CDatabaseManager.OKRES_OD, CDatabaseManager.OKRES_DO};
-//    private String[] KDO_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
-//    private String[] DOCHODY_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
-//    private String[] KWY_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
-//    private String[] WYDATKI_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
-//    private String[] SUBKATEGORIA_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
+    private String[] KDO_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
+    private String[] DOCHODY_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
+    private String[] SUBKATEGORIA_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
+    private String[] KWY_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
+    private String[] WYDATKI_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
+
 
     public CBazaSystem(Context context){
         dbManager = new CDatabaseManager(context);
@@ -31,10 +33,20 @@ public class CBazaSystem {
 
     public void open(){
         dbOkres = dbManager.getWritableDatabase();
+        dbKDO = dbManager.getWritableDatabase();
+        dbDochody = dbManager.getWritableDatabase();
+        dbSubkategoria = dbManager.getWritableDatabase();
+        dbKWY = dbManager.getWritableDatabase();
+        dbDochody = dbManager.getWritableDatabase();
     }
 
     public void close(){
         dbOkres.close();
+        dbKDO.close();
+        dbDochody.close();
+        dbSubkategoria.close();
+        dbKWY.close();
+        dbWydatki.close();
     }
     //Zapytanie związane z Okresem
     private COkres parseOkres(Cursor k){
@@ -74,7 +86,7 @@ public class CBazaSystem {
         long id = okr.getOKRk_1_Id();
         dbOkres.delete(CDatabaseManager.TABLE_OKRES, CDatabaseManager.OKRES_ID + " = " + id, null);
     }
-/*
+
     //Zapytania związane z kategorią Dochodów
     private CKat_doch parseKDO(Cursor k){
         CKat_doch kdo = new CKat_doch();
@@ -123,12 +135,11 @@ public class CBazaSystem {
         return doc;
     }
 
-    public CDochody dodajDochody(float kwota, String data, int kdoid, int okrid){
+    public CDochody dodajDochody(float kwota, String data, int kdoid){
         ContentValues cv = new ContentValues();
         cv.put(CDatabaseManager.DOCHODY_KWOTA, kwota);
         cv.put(CDatabaseManager.DOCHODY_DATA, data);
         cv.put(CDatabaseManager.KDO_ID_FK_DOCHODY, kdoid);
-        cv.put(CDatabaseManager.OKRES_ID_FK_DOCHODY, okrid);
         long dochodyID = dbDochody.insert(CDatabaseManager.TABLE_DOCHODY, null, cv);
         Cursor kursor = dbDochody.query(CDatabaseManager.TABLE_DOCHODY, DOCHODY_REKORD, CDatabaseManager.DOCHODY_ID + " = " + dochodyID, null, null, null, null);
         kursor.moveToFirst();
@@ -138,21 +149,59 @@ public class CBazaSystem {
     }
 
     public List<CDochody> zwrocDochody(){
-        List<CDochody> kategorie = new ArrayList<CDochody>();
+        List<CDochody> dochody = new ArrayList<CDochody>();
         Cursor kursor = dbDochody.query(CDatabaseManager.TABLE_DOCHODY, DOCHODY_REKORD, null, null, null, null, null);
         kursor.moveToFirst();
         while (!kursor.isAfterLast()) {
             CDochody doc = parseDochody(kursor);
-            kategorie.add(doc);
+            dochody.add(doc);
             kursor.moveToNext();
         }
         kursor.close();
-        return kategorie;
+        return dochody;
     }
 
     public void usunDochody(CDochody doc){
         long id = doc.getDOCk_1_Id();
         dbDochody.delete(CDatabaseManager.TABLE_DOCHODY, CDatabaseManager.DOCHODY_ID + " = " + id, null);
+    }
+
+    //zapytanie związane z Subkategoriami
+
+    private CSubkategoria parseSubkategoria(Cursor k){
+        CSubkategoria sub = new CSubkategoria();
+        sub.setSUBk_1_Id(k.getInt(0));
+        sub.setSUB_Nazwa(k.getString(1));
+        return sub;
+    }
+
+    public CSubkategoria dodajSubkategorie(String nazwa){
+        ContentValues cv = new ContentValues();
+        cv.put(CDatabaseManager.SUB_NAZWA, nazwa);
+        long subID = dbSubkategoria.insert(CDatabaseManager.TABLE_SUB, null, cv);
+        Cursor kursor = dbSubkategoria.query(CDatabaseManager.TABLE_SUB, SUBKATEGORIA_REKORD, CDatabaseManager.SUB_ID + " = " + subID, null, null, null, null);
+        kursor.moveToFirst();
+        CSubkategoria nowySUB = parseSubkategoria(kursor);
+        kursor.close();
+        return nowySUB;
+    }
+
+    public List<CSubkategoria> zwrocSubkategorie(){
+        List<CSubkategoria> subkategorie = new ArrayList<CSubkategoria>();
+        Cursor kursor = dbSubkategoria.query(CDatabaseManager.TABLE_SUB, SUBKATEGORIA_REKORD, null, null, null, null, null);
+        kursor.moveToFirst();
+        while (!kursor.isAfterLast()) {
+            CSubkategoria sub = parseSubkategoria(kursor);
+            subkategorie.add(sub);
+            kursor.moveToNext();
+        }
+        kursor.close();
+        return subkategorie;
+    }
+
+    public void usunSubkategorie(CSubkategoria sub){
+        long id = sub.getSUBk_1_Id();
+        dbSubkategoria.delete(CDatabaseManager.TABLE_SUB, CDatabaseManager.SUB_ID + " = " + id, null);
     }
 
     //Zapytania związane z Kategoriami Wydatków
@@ -191,5 +240,47 @@ public class CBazaSystem {
         long id = kwy.getKWYk_1_Id();
         dbKWY.delete(CDatabaseManager.TABLE_KWY, CDatabaseManager.KWY_ID + " = " + id, null);
     }
-    */
+
+    //Zapytania związane z Wydatkami
+    private CWydatki parseWydatki(Cursor k){
+        CWydatki wyd = new CWydatki();
+        wyd.setWYDk_1_Id(k.getInt(0));
+        wyd.setWYD_Kwota(k.getFloat(1));
+        wyd.setWYD_Data(k.getString(2));
+        wyd.setKWY_Id(k.getInt(3));
+        wyd.setSUB_Id(k.getInt(4));
+        return wyd;
+    }
+
+    public CWydatki dodajWydatki(float kwota, String data, int kwyid, int subid){
+        ContentValues cv = new ContentValues();
+        cv.put(CDatabaseManager.WYDATKI_KWOTA, kwota);
+        cv.put(CDatabaseManager.WYDATKI_DATA, data);
+        cv.put(CDatabaseManager.KWY_ID_FK_WYDATKI, kwyid);
+        cv.put(CDatabaseManager.SUB_ID_FK_WYDATKI, subid);
+        long wydatkiID = dbWydatki.insert(CDatabaseManager.TABLE_WYDATKI, null, cv);
+        Cursor kursor = dbWydatki.query(CDatabaseManager.TABLE_WYDATKI, WYDATKI_REKORD, CDatabaseManager.WYDATKI_ID + " = " + wydatkiID, null, null, null, null);
+        kursor.moveToFirst();
+        CWydatki nowyWydatek = parseWydatki(kursor);
+        kursor.close();
+        return nowyWydatek;
+    }
+
+    public List<CWydatki> zwrocWydatki(){
+        List<CWydatki> wydatki = new ArrayList<CWydatki>();
+        Cursor kursor = dbWydatki.query(CDatabaseManager.TABLE_WYDATKI, WYDATKI_REKORD, null, null, null, null, null);
+        kursor.moveToFirst();
+        while (!kursor.isAfterLast()) {
+            CWydatki wyd = parseWydatki(kursor);
+            wydatki.add(wyd);
+            kursor.moveToNext();
+        }
+        kursor.close();
+        return wydatki;
+    }
+
+    public void usunWydatki(CWydatki wyd){
+        long id = wyd.getWYDk_1_Id();
+        dbWydatki.delete(CDatabaseManager.TABLE_WYDATKI, CDatabaseManager.WYDATKI_ID + " = " + id, null);
+    }
 }
