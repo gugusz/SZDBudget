@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +16,16 @@ public class CBazaSystem {
     private SQLiteDatabase dbSubkategoria;
     private SQLiteDatabase dbKWY;
     private SQLiteDatabase dbWydatki;
+    private SQLiteDatabase dbPLanowanie;
 
 
     private String[] OKRES_REKORD = {CDatabaseManager.OKRES_ID, CDatabaseManager.OKRES_OD, CDatabaseManager.OKRES_DO};
     private String[] KDO_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
-    private String[] DOCHODY_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
-    private String[] SUBKATEGORIA_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
-    private String[] KWY_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
-    private String[] WYDATKI_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
-
+    private String[] DOCHODY_REKORD = {CDatabaseManager.DOCHODY_ID, CDatabaseManager.DOCHODY_KWOTA, CDatabaseManager.DOCHODY_DATA, CDatabaseManager.KDO_ID_FK_DOCHODY};
+    private String[] SUBKATEGORIA_REKORD = {CDatabaseManager.SUB_ID, CDatabaseManager.SUB_NAZWA};
+    private String[] KWY_REKORD = {CDatabaseManager.KWY_ID, CDatabaseManager.KWY_NAZWA};
+    private String[] WYDATKI_REKORD = {CDatabaseManager.WYDATKI_ID, CDatabaseManager.WYDATKI_KWOTA, CDatabaseManager.WYDATKI_DATA, CDatabaseManager.KWY_ID_FK_WYDATKI, CDatabaseManager.SUB_ID_FK_WYDATKI};
+    private String[] PLANOWANIE_REKORD = {CDatabaseManager.PLANOWANIE_ID, CDatabaseManager.PLANOWANIE_NAZWA, CDatabaseManager.PLANOWANIE_OD, CDatabaseManager.PLANOWANIE_DATA_ZAK};
 
     public CBazaSystem(Context context){
         dbManager = new CDatabaseManager(context);
@@ -33,11 +33,12 @@ public class CBazaSystem {
 
     public void open(){
         dbOkres = dbManager.getWritableDatabase();
-        dbKDO = dbManager.getWritableDatabase();
-        dbDochody = dbManager.getWritableDatabase();
-        dbSubkategoria = dbManager.getWritableDatabase();
-        dbKWY = dbManager.getWritableDatabase();
-        dbDochody = dbManager.getWritableDatabase();
+        //dbKDO = dbManager.getWritableDatabase();
+        //dbDochody = dbManager.getWritableDatabase();
+        //dbSubkategoria = dbManager.getWritableDatabase();
+        //dbKWY = dbManager.getWritableDatabase();
+        //dbWydatki = dbManager.getWritableDatabase();
+        //dbPLanowanie = dbManager.getWritableDatabase();
     }
 
     public void close(){
@@ -47,6 +48,7 @@ public class CBazaSystem {
         dbSubkategoria.close();
         dbKWY.close();
         dbWydatki.close();
+        dbPLanowanie.close();
     }
     //Zapytanie związane z Okresem
     private COkres parseOkres(Cursor k){
@@ -131,7 +133,6 @@ public class CBazaSystem {
         doc.setDOC_Kwota(k.getFloat(1));
         doc.setDOC_Data(k.getString(2));
         doc.setKDO_Id(k.getInt(3));
-        doc.setOKR_Id(k.getInt(4));
         return doc;
     }
 
@@ -282,5 +283,46 @@ public class CBazaSystem {
     public void usunWydatki(CWydatki wyd){
         long id = wyd.getWYDk_1_Id();
         dbWydatki.delete(CDatabaseManager.TABLE_WYDATKI, CDatabaseManager.WYDATKI_ID + " = " + id, null);
+    }
+
+    //Zapytanie związane z Planowaniem
+    private CPlanowanie parsePlanowanie(Cursor k){
+        CPlanowanie pla = new CPlanowanie();
+        pla.setPLAk_1_Id(k.getInt(0));
+        pla.setPLA_NazwaPrzedmiotu(k.getString(1));
+        pla.setPLA_Od(k.getString(2));
+        pla.setPLA_DataZakupu(k.getString(3));
+        return pla;
+    }
+
+    public CPlanowanie dodajPlan(String nazwa, String od, String datazak){
+        ContentValues cv = new ContentValues();
+        cv.put(CDatabaseManager.PLANOWANIE_NAZWA, nazwa);
+        cv.put(CDatabaseManager.PLANOWANIE_OD, od);
+        cv.put(CDatabaseManager.PLANOWANIE_DATA_ZAK, datazak);
+        long plaID = dbPLanowanie.insert(CDatabaseManager.TABLE_PLANOWANIE, null, cv);
+        Cursor kursor = dbPLanowanie.query(CDatabaseManager.TABLE_PLANOWANIE, PLANOWANIE_REKORD, CDatabaseManager.PLANOWANIE_ID + " = " + plaID, null, null, null, null);
+        kursor.moveToFirst();
+        CPlanowanie nowyPLA = parsePlanowanie(kursor);
+        kursor.close();
+        return nowyPLA;
+    }
+
+    public List<CPlanowanie> zwrocPlany(){
+        List<CPlanowanie> plany = new ArrayList<CPlanowanie>();
+        Cursor kursor = dbPLanowanie.query(CDatabaseManager.TABLE_PLANOWANIE, PLANOWANIE_REKORD, null, null, null, null, null);
+        kursor.moveToFirst();
+        while (!kursor.isAfterLast()) {
+            CPlanowanie pla = parsePlanowanie(kursor);
+            plany.add(pla);
+            kursor.moveToNext();
+        }
+        kursor.close();
+        return plany;
+    }
+
+    public void usunPlan(CPlanowanie pla){
+        long id = pla.getPLAk_1_Id();
+        dbPLanowanie.delete(CDatabaseManager.TABLE_PLANOWANIE, CDatabaseManager.PLANOWANIE_ID + " = " + id, null);
     }
 }

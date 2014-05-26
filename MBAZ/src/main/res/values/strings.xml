@@ -25,5 +25,13 @@
     <string name="hintUstawieniaOd">Podaj datę rozpoczęcia okresu</string>
     <string name="hintUstawieniaDo">Podaj datę zakończenia okresu</string>
     <string name="buttonUstawienia">Dodaj</string>
+    <string name="textViewDDochody1">Dodaj swoje dochody</string>
+    <string name="textViewDDochody2">Wybierz kategorię dochodów</string>
+    <string name="textViewDDochody3">Albo dodaj kategorię dochodów</string>
+    <string name="editTextDDochodyNazwa">Podaj nazwę dochodu</string>
+    <string name="editTextDDochodyData">Podaj datę dochodu</string>
+    <string name="editTextDDochodyKategoria">Podaj nazwę kategorii</string>
+    <string name="buttonDDochodyKategoria">Dodaj kategorię</string>
+    <string name="buttonDDochodyDodaj">Dodaj dochód</string>
 
 </resources>

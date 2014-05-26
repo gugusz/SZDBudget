@@ -17,9 +17,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_main);
         Button b1 = (Button) findViewById(R.id.buttonMain);
         b1.setOnClickListener(this);
-
-        CBazaSystem bazaDanych = new CBazaSystem(this);
-        bazaDanych.open();
     }
 
 

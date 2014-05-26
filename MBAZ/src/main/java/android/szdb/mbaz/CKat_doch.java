@@ -16,4 +16,7 @@ public class CKat_doch {
     public void setKDO_Nazwa(String kDO_Nazwa) {
         KDO_Nazwa = kDO_Nazwa;
     }
+    public String toString(){
+        return KDO_Nazwa;
+    }
 }
