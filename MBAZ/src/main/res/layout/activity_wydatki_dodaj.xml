@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -9,8 +9,131 @@
     tools:context="android.szdb.mbaz.WydatkiDodajActivity">
 
     <TextView
-        android:text="@string/hello_world"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/textViewDWydatki1"
+        android:id="@+id/textViewDWydatki1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/editTextDWydatkiKwota"
+        android:layout_below="@+id/textViewDWydatki1"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/textViewDWydatki1"
+        android:hint="@string/editTextDDochodyKwota"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/editTextDWydatkiData"
+        android:layout_below="@+id/editTextDWydatkiKwota"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/editTextDWydatkiKwota"
+        android:hint="@string/editTextDDochodyData" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerDWydatki1"
+        android:layout_below="@+id/textViewDWydatki2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/textViewDWydatki2"
+        android:id="@+id/textViewDWydatki2"
+        android:layout_below="@+id/editTextDWydatkiData"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/editTextDWydatkiData" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerDWydatki2"
+        android:layout_below="@+id/spinnerDWydatki1"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:text="@string/buttonDWydatkiDodaj"
+        android:id="@+id/buttonDWydatkiDodaj"
+        android:layout_below="@+id/spinnerDWydatki2"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/spinnerDWydatki2" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/relativeLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/buttonDWydatkiDodaj">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonDDochodyKategoria"
+            android:id="@+id/buttonDWydatkiKategoria"
+            android:visibility="visible"
+            android:clickable="false"
+            android:enabled="false"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkBoxDWydatki"
+            android:checked="false"
+            android:layout_below="@+id/textViewDWydatki3"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextDWydatkiKategoria"
+            android:hint="@string/editTextDDochodyKategoria"
+            android:enabled="false"
+            android:layout_above="@+id/buttonDWydatkiKategoria"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/textViewDWydatki3"
+            android:id="@+id/textViewDWydatki3"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/toggleButtonDWydatki"
+            android:id="@+id/toggleButtonDWydatki"
+            android:layout_below="@+id/textViewDWydatki3"
+            android:layout_toRightOf="@+id/checkBoxDWydatki"
+            android:layout_alignParentEnd="true"
+            android:layout_above="@+id/editTextDWydatkiKategoria"
+            android:checked="false"
+            android:textOff="@string/toggleButtonDWydatkiOff"
+            android:textOn="@string/toggleButtonDWydatkiOn"
+            android:enabled="false" />
+    </RelativeLayout>
 
 </RelativeLayout>

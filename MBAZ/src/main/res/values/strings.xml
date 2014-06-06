@@ -28,10 +28,20 @@
     <string name="textViewDDochody1">Dodaj swoje dochody</string>
     <string name="textViewDDochody2">Wybierz kategorię dochodów</string>
     <string name="textViewDDochody3">Albo dodaj kategorię dochodów</string>
-    <string name="editTextDDochodyNazwa">Podaj nazwę dochodu</string>
+    <string name="editTextDDochodyKwota">Podaj kwotę</string>
     <string name="editTextDDochodyData">Podaj datę dochodu</string>
     <string name="editTextDDochodyKategoria">Podaj nazwę kategorii</string>
     <string name="buttonDDochodyKategoria">Dodaj kategorię</string>
     <string name="buttonDDochodyDodaj">Dodaj dochód</string>
+    <string name="textViewDochody">Zestaw wszystkich dochodów</string>
+    <string name="textViewDWydatki1">Dodaj swoje wydatki</string>
+    <string name="textViewDWydatki2">Wybierz kategorię wydatków</string>
+    <string name="textViewDWydatki3">Albo podaj kategorie wydatków</string>
+    <string name="buttonDWydatkiDodaj">Dodaj wydatek</string>
+    <string name="toggleButtonDWydatkiOff">Kategoria</string>
+    <string name="toggleButtonDWydatkiOn">Subkategoria</string>
+    <string name="Zmiana">New ToggleButton</string>
+    <string name="toggleButtonDWydatki">Kategoria/Subkategoria</string>
+    <string name="textViewWydatki">Zestawienie wszystkich wydatków</string>
 
 </resources>

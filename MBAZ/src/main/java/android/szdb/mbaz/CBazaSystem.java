@@ -12,21 +12,21 @@ public class CBazaSystem {
     private CDatabaseManager dbManager;
     private SQLiteDatabase dbOkres;
     private SQLiteDatabase dbKDO;
-    /*private SQLiteDatabase dbDochody;
-    private SQLiteDatabase dbSubkategoria;
+    private SQLiteDatabase dbDochody;
     private SQLiteDatabase dbKWY;
+    private SQLiteDatabase dbSubkategoria;
     private SQLiteDatabase dbWydatki;
-    private SQLiteDatabase dbPLanowanie;*/
+    private SQLiteDatabase dbPLanowanie;
 
 
     private String[] OKRES_REKORD = {CDatabaseManager.OKRES_ID, CDatabaseManager.OKRES_OD, CDatabaseManager.OKRES_DO};
     private String[] KDO_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
-    /*private String[] DOCHODY_REKORD = {CDatabaseManager.DOCHODY_ID, CDatabaseManager.DOCHODY_KWOTA, CDatabaseManager.DOCHODY_DATA, CDatabaseManager.KDO_ID_FK_DOCHODY};
-    private String[] SUBKATEGORIA_REKORD = {CDatabaseManager.SUB_ID, CDatabaseManager.SUB_NAZWA};
+    private String[] DOCHODY_REKORD = {CDatabaseManager.DOCHODY_ID, CDatabaseManager.DOCHODY_KWOTA, CDatabaseManager.DOCHODY_DATA, CDatabaseManager.KDO_ID_FK_DOCHODY};
     private String[] KWY_REKORD = {CDatabaseManager.KWY_ID, CDatabaseManager.KWY_NAZWA};
+    private String[] SUBKATEGORIA_REKORD = {CDatabaseManager.SUB_ID, CDatabaseManager.SUB_NAZWA};
     private String[] WYDATKI_REKORD = {CDatabaseManager.WYDATKI_ID, CDatabaseManager.WYDATKI_KWOTA, CDatabaseManager.WYDATKI_DATA, CDatabaseManager.KWY_ID_FK_WYDATKI, CDatabaseManager.SUB_ID_FK_WYDATKI};
     private String[] PLANOWANIE_REKORD = {CDatabaseManager.PLANOWANIE_ID, CDatabaseManager.PLANOWANIE_NAZWA, CDatabaseManager.PLANOWANIE_OD, CDatabaseManager.PLANOWANIE_DATA_ZAK};
-*/
+
     public CBazaSystem(Context context){
         dbManager = new CDatabaseManager(context);
     }
@@ -34,21 +34,21 @@ public class CBazaSystem {
     public void open(){
         dbOkres = dbManager.getWritableDatabase();
         dbKDO = dbManager.getWritableDatabase();
-        //dbDochody = dbManager.getWritableDatabase();
-        //dbSubkategoria = dbManager.getWritableDatabase();
-        //dbKWY = dbManager.getWritableDatabase();
-        //dbWydatki = dbManager.getWritableDatabase();
-        //dbPLanowanie = dbManager.getWritableDatabase();
+        dbDochody = dbManager.getWritableDatabase();
+        dbKWY = dbManager.getWritableDatabase();
+        dbSubkategoria = dbManager.getWritableDatabase();
+        dbWydatki = dbManager.getWritableDatabase();
+        dbPLanowanie = dbManager.getWritableDatabase();
     }
 
     public void close(){
         dbOkres.close();
         dbKDO.close();
-        /*dbDochody.close();
-        dbSubkategoria.close();
+        dbDochody.close();
         dbKWY.close();
+        dbSubkategoria.close();
         dbWydatki.close();
-        dbPLanowanie.close();*/
+        dbPLanowanie.close();
     }
     //Zapytanie związane z Okresem
     private COkres parseOkres(Cursor k){
@@ -125,7 +125,7 @@ public class CBazaSystem {
         long id = kdo.getKDOk_1_Id();
         dbKDO.delete(CDatabaseManager.TABLE_KDO, CDatabaseManager.KDO_ID + " = " + id, null);
     }
-/*
+
     //Zapytania związane z Dochodami
     private CDochody parseDochody(Cursor k){
         CDochody doc = new CDochody();
@@ -167,44 +167,6 @@ public class CBazaSystem {
         dbDochody.delete(CDatabaseManager.TABLE_DOCHODY, CDatabaseManager.DOCHODY_ID + " = " + id, null);
     }
 
-    //zapytanie związane z Subkategoriami
-
-    private CSubkategoria parseSubkategoria(Cursor k){
-        CSubkategoria sub = new CSubkategoria();
-        sub.setSUBk_1_Id(k.getInt(0));
-        sub.setSUB_Nazwa(k.getString(1));
-        return sub;
-    }
-
-    public CSubkategoria dodajSubkategorie(String nazwa){
-        ContentValues cv = new ContentValues();
-        cv.put(CDatabaseManager.SUB_NAZWA, nazwa);
-        long subID = dbSubkategoria.insert(CDatabaseManager.TABLE_SUB, null, cv);
-        Cursor kursor = dbSubkategoria.query(CDatabaseManager.TABLE_SUB, SUBKATEGORIA_REKORD, CDatabaseManager.SUB_ID + " = " + subID, null, null, null, null);
-        kursor.moveToFirst();
-        CSubkategoria nowySUB = parseSubkategoria(kursor);
-        kursor.close();
-        return nowySUB;
-    }
-
-    public List<CSubkategoria> zwrocSubkategorie(){
-        List<CSubkategoria> subkategorie = new ArrayList<CSubkategoria>();
-        Cursor kursor = dbSubkategoria.query(CDatabaseManager.TABLE_SUB, SUBKATEGORIA_REKORD, null, null, null, null, null);
-        kursor.moveToFirst();
-        while (!kursor.isAfterLast()) {
-            CSubkategoria sub = parseSubkategoria(kursor);
-            subkategorie.add(sub);
-            kursor.moveToNext();
-        }
-        kursor.close();
-        return subkategorie;
-    }
-
-    public void usunSubkategorie(CSubkategoria sub){
-        long id = sub.getSUBk_1_Id();
-        dbSubkategoria.delete(CDatabaseManager.TABLE_SUB, CDatabaseManager.SUB_ID + " = " + id, null);
-    }
-
     //Zapytania związane z Kategoriami Wydatków
     private CKat_wyd parseKWY(Cursor k){
         CKat_wyd kwy = new CKat_wyd();
@@ -240,6 +202,43 @@ public class CBazaSystem {
     public void usunKWY(CKat_wyd kwy){
         long id = kwy.getKWYk_1_Id();
         dbKWY.delete(CDatabaseManager.TABLE_KWY, CDatabaseManager.KWY_ID + " = " + id, null);
+    }
+
+    //zapytanie związane z Subkategoriami
+    private CSubkategoria parseSubkategoria(Cursor k){
+        CSubkategoria sub = new CSubkategoria();
+        sub.setSUBk_1_Id(k.getInt(0));
+        sub.setSUB_Nazwa(k.getString(1));
+        return sub;
+    }
+
+    public CSubkategoria dodajSubkategorie(String nazwa){
+        ContentValues cv = new ContentValues();
+        cv.put(CDatabaseManager.SUB_NAZWA, nazwa);
+        long subID = dbSubkategoria.insert(CDatabaseManager.TABLE_SUB, null, cv);
+        Cursor kursor = dbSubkategoria.query(CDatabaseManager.TABLE_SUB, SUBKATEGORIA_REKORD, CDatabaseManager.SUB_ID + " = " + subID, null, null, null, null);
+        kursor.moveToFirst();
+        CSubkategoria nowySUB = parseSubkategoria(kursor);
+        kursor.close();
+        return nowySUB;
+    }
+
+    public List<CSubkategoria> zwrocSubkategorie(){
+        List<CSubkategoria> subkategorie = new ArrayList<CSubkategoria>();
+        Cursor kursor = dbSubkategoria.query(CDatabaseManager.TABLE_SUB, SUBKATEGORIA_REKORD, null, null, null, null, null);
+        kursor.moveToFirst();
+        while (!kursor.isAfterLast()) {
+            CSubkategoria sub = parseSubkategoria(kursor);
+            subkategorie.add(sub);
+            kursor.moveToNext();
+        }
+        kursor.close();
+        return subkategorie;
+    }
+
+    public void usunSubkategorie(CSubkategoria sub) {
+        long id = sub.getSUBk_1_Id();
+        dbSubkategoria.delete(CDatabaseManager.TABLE_SUB, CDatabaseManager.SUB_ID + " = " + id, null);
     }
 
     //Zapytania związane z Wydatkami
@@ -324,5 +323,5 @@ public class CBazaSystem {
     public void usunPlan(CPlanowanie pla){
         long id = pla.getPLAk_1_Id();
         dbPLanowanie.delete(CDatabaseManager.TABLE_PLANOWANIE, CDatabaseManager.PLANOWANIE_ID + " = " + id, null);
-    }*/
+    }
 }

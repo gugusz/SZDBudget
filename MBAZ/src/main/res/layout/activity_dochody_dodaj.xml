@@ -22,12 +22,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:id="@+id/editTextDDochodyNazwa"
+        android:id="@+id/editTextDDochodyKwota"
         android:layout_below="@+id/textViewDDochody1"
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/textViewDDochody1"
-        android:inputType="text"
-        android:hint="@string/editTextDDochodyNazwa" />
+        android:hint="@string/editTextDDochodyKwota"
+        android:inputType="numberDecimal" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -35,9 +35,9 @@
         android:inputType="date"
         android:ems="10"
         android:id="@+id/editTextDDochodyData"
-        android:layout_below="@+id/editTextDDochodyNazwa"
+        android:layout_below="@+id/editTextDDochodyKwota"
         android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/editTextDDochodyNazwa"
+        android:layout_alignEnd="@+id/editTextDDochodyKwota"
         android:hint="@string/editTextDDochodyData" />
 
     <Spinner
@@ -60,28 +60,29 @@
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:text="@string/buttonDDochodyDodaj"
         android:id="@+id/buttonDDochodyDodaj"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/relativeLayout" />
+        android:layout_below="@+id/spinnerDDochody"
+        android:layout_alignEnd="@+id/spinnerDDochody"
+        android:layout_alignParentStart="true" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/buttonDDochodyDodaj"
-        android:layout_below="@+id/spinnerDDochody"
-        android:id="@+id/relativeLayout">
+        android:id="@+id/relativeLayout"
+        android:layout_below="@+id/buttonDDochodyDodaj"
+        android:layout_centerHorizontal="true">
 
-        <TextView
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/textViewDDochody3"
-            android:id="@+id/textViewDDochody3"
-            android:layout_alignParentTop="true"
+            android:text="@string/buttonDDochodyKategoria"
+            android:id="@+id/buttonDDochodyKategoria"
+            android:visibility="visible"
+            android:clickable="false"
+            android:enabled="false"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true" />
 
@@ -89,32 +90,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/editTextDDochodyKategoria"
-            android:layout_below="@+id/textViewDDochody3"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
             android:hint="@string/editTextDDochodyKategoria"
-            android:enabled="false" />
+            android:enabled="false"
+            android:layout_above="@+id/buttonDDochodyKategoria"
+            android:layout_toRightOf="@+id/checkBoxDDochody"
+            android:layout_alignParentEnd="true" />
 
-        <Button
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/buttonDDochodyKategoria"
-            android:id="@+id/buttonDDochodyKategoria"
-            android:layout_below="@+id/editTextDDochodyKategoria"
-            android:layout_toRightOf="@+id/checkBoxDDochody"
-            android:visibility="visible"
-            android:clickable="false"
-            android:enabled="false"
-            android:layout_alignParentEnd="true" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/textViewDDochody3"
+            android:id="@+id/textViewDDochody3"
+            android:layout_above="@+id/editTextDDochodyKategoria"
+            android:layout_alignEnd="@+id/editTextDDochodyKategoria"
+            android:layout_alignParentStart="true" />
 
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/checkBoxDDochody"
-            android:layout_alignParentStart="true"
-            android:layout_alignBottom="@+id/buttonDDochodyKategoria"
-            android:layout_below="@+id/editTextDDochodyKategoria"
-            android:checked="false" />
+            android:checked="false"
+            android:layout_above="@+id/buttonDDochodyKategoria"
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -9,8 +9,19 @@
     tools:context="android.szdb.mbaz.DochodyActivity">
 
     <TextView
-        android:text="@string/hello_world"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/textViewDochody"
+        android:id="@+id/textViewDochody"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewDochody"
+        android:layout_below="@+id/textViewDochody"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

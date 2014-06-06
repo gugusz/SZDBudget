@@ -1,6 +1,7 @@
 package android.szdb.mbaz;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,37 +18,38 @@ import java.util.List;
 
 public class DochodyDodajActivity extends Activity implements View.OnClickListener{
 
-    private EditText nazwa;
+    private EditText kwota;
     private EditText data;
-    private Spinner lista;
+    private Spinner spinnerDD;
     private EditText kategoria;
     private CheckBox opcja;
     private Button dodajKategorie;
     private Button dodajDochod;
     private CBazaSystem bazaDanych;
+    private List<CKat_doch>listaKategoriiDochodow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dochody_dodaj);
-        nazwa = (EditText)findViewById(R.id.editTextDDochodyNazwa);
+        kwota = (EditText)findViewById(R.id.editTextDDochodyKwota);
         data = (EditText)findViewById(R.id.editTextDDochodyData);
-        lista = (Spinner)findViewById(R.id.spinnerDDochody);
+        spinnerDD = (Spinner)findViewById(R.id.spinnerDDochody);
         kategoria = (EditText)findViewById(R.id.editTextDDochodyKategoria);
         opcja = (CheckBox)findViewById(R.id.checkBoxDDochody);
         dodajKategorie = (Button)findViewById(R.id.buttonDDochodyKategoria);
         dodajDochod = (Button)findViewById(R.id.buttonDDochodyDodaj);
 
-        bazaDanych = new CBazaSystem(this);
-        bazaDanych.open();
-
-        //List<CKat_doch>listaKategoriiDochodow = bazaDanych.zwrocKDO();
-        //ArrayAdapter<CKat_doch> adapterKDO = new ArrayAdapter<CKat_doch>(this, android.R.layout.simple_list_item_1, listaKategoriiDochodow);
-        //lista.setAdapter(adapterKDO);
-
         opcja.setOnClickListener(this);
         dodajKategorie.setOnClickListener(this);
         dodajDochod.setOnClickListener(this);
+
+        bazaDanych = new CBazaSystem(this);
+        bazaDanych.open();
+
+        listaKategoriiDochodow = bazaDanych.zwrocKDO();
+        ArrayAdapter<CKat_doch> adapterKDO = new ArrayAdapter<CKat_doch>(this, android.R.layout.simple_list_item_1, listaKategoriiDochodow);
+        spinnerDD.setAdapter(adapterKDO);
     }
 
 
@@ -75,24 +77,29 @@ public class DochodyDodajActivity extends Activity implements View.OnClickListen
 
         switch (view.getId()){
             case R.id.checkBoxDDochody:
-                //Toast.makeText(this,"Dupa",Toast.LENGTH_SHORT).show();
                 if(opcja.isChecked()){
-                    //Toast.makeText(this,"Dupa1",Toast.LENGTH_SHORT).show();
-                    //opcja.setChecked(false);
                     kategoria.setEnabled(true);
                     dodajKategorie.setEnabled(true);
                 }
                 else{
-                    //Toast.makeText(this,"Dupa2",Toast.LENGTH_SHORT).show();
-                    //opcja.setChecked(false);
                     kategoria.setEnabled(false);
                     dodajKategorie.setEnabled(false);
                 }
                 break;
             case R.id.buttonDDochodyDodaj:
+                int tmp = listaKategoriiDochodow.get(spinnerDD.getSelectedItemPosition()).getKDOk_1_Id();// nie jestem pewnien co do tego
+                //Toast.makeText(this,String.valueOf(tmp),Toast.LENGTH_SHORT).show();
+                CDochody newDOC = bazaDanych.dodajDochody(Float.valueOf(kwota.getText().toString()),data.getText().toString(),tmp);
                 break;
             case R.id.buttonDDochodyKategoria:
+                ArrayAdapter<CKat_doch> adapter = (ArrayAdapter<CKat_doch>) spinnerDD.getAdapter();
                 CKat_doch newKDO = bazaDanych.dodajKDO(kategoria.getText().toString());
+                adapter.add(newKDO);
+                kategoria.setText(null);
+                kategoria.setHint("Podaj nazwę kategorii");
+                kategoria.setEnabled(false);
+                dodajKategorie.setEnabled(false);
+                opcja.setChecked(false);
                 break;
         }
     }

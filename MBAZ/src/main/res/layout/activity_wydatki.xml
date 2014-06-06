@@ -9,8 +9,19 @@
     tools:context="android.szdb.mbaz.WydatkiActivity">
 
     <TextView
-        android:text="@string/hello_world"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/textViewWydatki"
+        android:id="@+id/textViewWydatki"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewWydatki"
+        android:layout_below="@+id/textViewWydatki"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
