@@ -57,7 +57,7 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
         switch (view.getId()){
             case R.id.buttonPlany:
                 //Toast.makeText(this,nazwa.getText().toString()+ od.getText().toString()+ dataZakupu.getText().toString(),Toast.LENGTH_SHORT).show();
-                CPlanowanie newPlan = bazaDanych.dodajPlan(nazwa.getText().toString(), od.getText().toString(), dataZakupu.getText().toString());
+                //CPlanowanie newPlan = bazaDanych.dodajPlan(nazwa.getText().toString(), od.getText().toString(), dataZakupu.getText().toString());
                 break;
         }
     }

@@ -12,28 +12,28 @@ public class CBazaSystem {
     private CDatabaseManager dbManager;
     private SQLiteDatabase dbOkres;
     private SQLiteDatabase dbKDO;
-    private SQLiteDatabase dbDochody;
+    /*private SQLiteDatabase dbDochody;
     private SQLiteDatabase dbSubkategoria;
     private SQLiteDatabase dbKWY;
     private SQLiteDatabase dbWydatki;
-    private SQLiteDatabase dbPLanowanie;
+    private SQLiteDatabase dbPLanowanie;*/
 
 
     private String[] OKRES_REKORD = {CDatabaseManager.OKRES_ID, CDatabaseManager.OKRES_OD, CDatabaseManager.OKRES_DO};
     private String[] KDO_REKORD = {CDatabaseManager.KDO_ID, CDatabaseManager.KDO_NAZWA};
-    private String[] DOCHODY_REKORD = {CDatabaseManager.DOCHODY_ID, CDatabaseManager.DOCHODY_KWOTA, CDatabaseManager.DOCHODY_DATA, CDatabaseManager.KDO_ID_FK_DOCHODY};
+    /*private String[] DOCHODY_REKORD = {CDatabaseManager.DOCHODY_ID, CDatabaseManager.DOCHODY_KWOTA, CDatabaseManager.DOCHODY_DATA, CDatabaseManager.KDO_ID_FK_DOCHODY};
     private String[] SUBKATEGORIA_REKORD = {CDatabaseManager.SUB_ID, CDatabaseManager.SUB_NAZWA};
     private String[] KWY_REKORD = {CDatabaseManager.KWY_ID, CDatabaseManager.KWY_NAZWA};
     private String[] WYDATKI_REKORD = {CDatabaseManager.WYDATKI_ID, CDatabaseManager.WYDATKI_KWOTA, CDatabaseManager.WYDATKI_DATA, CDatabaseManager.KWY_ID_FK_WYDATKI, CDatabaseManager.SUB_ID_FK_WYDATKI};
     private String[] PLANOWANIE_REKORD = {CDatabaseManager.PLANOWANIE_ID, CDatabaseManager.PLANOWANIE_NAZWA, CDatabaseManager.PLANOWANIE_OD, CDatabaseManager.PLANOWANIE_DATA_ZAK};
-
+*/
     public CBazaSystem(Context context){
         dbManager = new CDatabaseManager(context);
     }
 
     public void open(){
         dbOkres = dbManager.getWritableDatabase();
-        //dbKDO = dbManager.getWritableDatabase();
+        dbKDO = dbManager.getWritableDatabase();
         //dbDochody = dbManager.getWritableDatabase();
         //dbSubkategoria = dbManager.getWritableDatabase();
         //dbKWY = dbManager.getWritableDatabase();
@@ -44,11 +44,11 @@ public class CBazaSystem {
     public void close(){
         dbOkres.close();
         dbKDO.close();
-        dbDochody.close();
+        /*dbDochody.close();
         dbSubkategoria.close();
         dbKWY.close();
         dbWydatki.close();
-        dbPLanowanie.close();
+        dbPLanowanie.close();*/
     }
     //Zapytanie związane z Okresem
     private COkres parseOkres(Cursor k){
@@ -125,7 +125,7 @@ public class CBazaSystem {
         long id = kdo.getKDOk_1_Id();
         dbKDO.delete(CDatabaseManager.TABLE_KDO, CDatabaseManager.KDO_ID + " = " + id, null);
     }
-
+/*
     //Zapytania związane z Dochodami
     private CDochody parseDochody(Cursor k){
         CDochody doc = new CDochody();
@@ -324,5 +324,5 @@ public class CBazaSystem {
     public void usunPlan(CPlanowanie pla){
         long id = pla.getPLAk_1_Id();
         dbPLanowanie.delete(CDatabaseManager.TABLE_PLANOWANIE, CDatabaseManager.PLANOWANIE_ID + " = " + id, null);
-    }
+    }*/
 }
