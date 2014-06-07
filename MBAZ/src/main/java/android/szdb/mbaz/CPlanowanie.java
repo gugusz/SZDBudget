@@ -5,6 +5,7 @@ public class CPlanowanie {
     private String PLA_NazwaPrzedmiotu;
     private String PLA_Od;
     private String PLA_DataZakupu;
+    private float PLA_Cena;
 
     public int getPLAk_1_Id() {
         return PLAk_1_Id;
@@ -38,7 +39,15 @@ public class CPlanowanie {
         this.PLA_DataZakupu = PLA_DataZakupu;
     }
 
+    public float getPLA_Cena() {
+        return PLA_Cena;
+    }
+
+    public void setPLA_Cena(float PLA_Cena) {
+        this.PLA_Cena = PLA_Cena;
+    }
+
     public String toString(){
-        return "Nazwa: " + PLA_NazwaPrzedmiotu + ", Od: " + PLA_Od + ", Do: " + PLA_DataZakupu;
+        return "Nazwa: " + PLA_NazwaPrzedmiotu + ", Od: " + PLA_Od + ", Do: " + PLA_DataZakupu + ", Cena: " + PLA_Cena;
     }
 }

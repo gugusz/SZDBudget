@@ -68,7 +68,7 @@
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="@string/buttonDWydatkiDodaj"
         android:id="@+id/buttonDWydatkiDodaj"
         android:layout_below="@+id/spinnerDWydatki2"

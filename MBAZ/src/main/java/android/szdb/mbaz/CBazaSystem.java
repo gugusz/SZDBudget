@@ -25,7 +25,7 @@ public class CBazaSystem {
     private String[] KWY_REKORD = {CDatabaseManager.KWY_ID, CDatabaseManager.KWY_NAZWA};
     private String[] SUBKATEGORIA_REKORD = {CDatabaseManager.SUB_ID, CDatabaseManager.SUB_NAZWA};
     private String[] WYDATKI_REKORD = {CDatabaseManager.WYDATKI_ID, CDatabaseManager.WYDATKI_KWOTA, CDatabaseManager.WYDATKI_DATA, CDatabaseManager.KWY_ID_FK_WYDATKI, CDatabaseManager.SUB_ID_FK_WYDATKI};
-    private String[] PLANOWANIE_REKORD = {CDatabaseManager.PLANOWANIE_ID, CDatabaseManager.PLANOWANIE_NAZWA, CDatabaseManager.PLANOWANIE_OD, CDatabaseManager.PLANOWANIE_DATA_ZAK};
+    private String[] PLANOWANIE_REKORD = {CDatabaseManager.PLANOWANIE_ID, CDatabaseManager.PLANOWANIE_NAZWA, CDatabaseManager.PLANOWANIE_OD, CDatabaseManager.PLANOWANIE_DATA_ZAK, CDatabaseManager.PLANOWANIE_CENA};
 
     public CBazaSystem(Context context){
         dbManager = new CDatabaseManager(context);
@@ -305,6 +305,7 @@ public class CBazaSystem {
         pla.setPLA_NazwaPrzedmiotu(k.getString(1));
         pla.setPLA_Od(k.getString(2));
         pla.setPLA_DataZakupu(k.getString(3));
+        pla.setPLA_Cena(k.getFloat(4));
         return pla;
     }
 

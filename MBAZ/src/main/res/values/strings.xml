@@ -46,5 +46,11 @@
     <string name="radioButtonUstawieniaKDO">Kat.Doch</string>
     <string name="radioButtonUstawieniaKWY">Kat.Wyd</string>
     <string name="radioButtonUstawieniaSUB">Subk.</string>
+    <string name="buttonPlanyDodaj">Dodaj zakup do zaplanowania</string>
+    <string name="editTextPlanyOd">Podaj datę od kiedy chcesz oszczędzać</string>
+    <string name="editTextPlanyDo">Podaj planowaną datę zakupu</string>
+    <string name="editTextPlanyCo">Podaj nazwę przedmiotu</string>
+    <string name="textViewWynik">W tym okresie musisz odłożyć:</string>
+    <string name="editTextPlanyCena">Podaj cenę planowanej rzeczy</string>
 
 </resources>

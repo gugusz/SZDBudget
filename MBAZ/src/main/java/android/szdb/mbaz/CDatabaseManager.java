@@ -47,6 +47,7 @@ public class CDatabaseManager extends SQLiteOpenHelper{
     public static  final  String PLANOWANIE_NAZWA = "PLA_NazwaPrzedmiotu";
     public static  final  String PLANOWANIE_OD = "PLA_Od";
     public static  final  String PLANOWANIE_DATA_ZAK = "PLA_DataZakupu";
+    public static  final  String PLANOWANIE_CENA = "PLA_Cena";
 
     //Tworzenie bazy
     private static final String DB_NAZWA = "SZDM.db";
@@ -58,7 +59,7 @@ public class CDatabaseManager extends SQLiteOpenHelper{
     private static final String CREATE_TABLE_KWY = "CREATE TABLE " + TABLE_KWY + "(" + KWY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KWY_NAZWA + " TEXT" + ")";
     private static final String CREATE_TABLE_SUBKATEGORIA = "CREATE TABLE " + TABLE_SUB + "(" + SUB_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + SUB_NAZWA + " TEXT" + ")";
     private static final String CREATE_TABLE_WYDATKI = "CREATE TABLE " + TABLE_WYDATKI + "(" + WYDATKI_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + WYDATKI_KWOTA + " REAL," + WYDATKI_DATA + " TEXT," + KWY_ID_FK_WYDATKI + " INTEGER NOT NULL, " + SUB_ID_FK_WYDATKI + " INTEGER, FOREIGN KEY(" + SUB_ID_FK_WYDATKI + ")" + "REFERENCES " + TABLE_SUB + "(" + SUB_ID + "), FOREIGN KEY(" + KWY_ID_FK_WYDATKI + ")" + "REFERENCES " + TABLE_KWY + "(" + KWY_ID + ")"+ ")";
-    private static final String CREATE_TABLE_PLANOWANIE = "CREATE TABLE " + TABLE_PLANOWANIE + "(" + PLANOWANIE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + PLANOWANIE_NAZWA + " TEXT," + PLANOWANIE_OD + " TEXT," + PLANOWANIE_DATA_ZAK + "TEXT" +")";
+    private static final String CREATE_TABLE_PLANOWANIE = "CREATE TABLE " + TABLE_PLANOWANIE + "(" + PLANOWANIE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + PLANOWANIE_NAZWA + " TEXT," + PLANOWANIE_OD + " TEXT," + PLANOWANIE_DATA_ZAK + " TEXT," + PLANOWANIE_CENA + " TEXT" + ")";
 
     //USTALENIE WERSJI - nie zmieniamy
     private static final int DB_WERSJA = 2;
