@@ -266,6 +266,20 @@ public class CBazaSystem {
         return nowyWydatek;
     }
 
+    public CWydatki dodajWydatkiNull(float kwota, String data, int kwyid){
+        ContentValues cv = new ContentValues();
+        cv.put(CDatabaseManager.WYDATKI_KWOTA, kwota);
+        cv.put(CDatabaseManager.WYDATKI_DATA, data);
+        cv.put(CDatabaseManager.KWY_ID_FK_WYDATKI, kwyid);
+        cv.putNull(CDatabaseManager.SUB_ID_FK_WYDATKI);
+        long wydatkiID = dbWydatki.insert(CDatabaseManager.TABLE_WYDATKI, null, cv);
+        Cursor kursor = dbWydatki.query(CDatabaseManager.TABLE_WYDATKI, WYDATKI_REKORD, CDatabaseManager.WYDATKI_ID + " = " + wydatkiID, null, null, null, null);
+        kursor.moveToFirst();
+        CWydatki nowyWydatek = parseWydatki(kursor);
+        kursor.close();
+        return nowyWydatek;
+    }
+
     public List<CWydatki> zwrocWydatki(){
         List<CWydatki> wydatki = new ArrayList<CWydatki>();
         Cursor kursor = dbWydatki.query(CDatabaseManager.TABLE_WYDATKI, WYDATKI_REKORD, null, null, null, null, null);

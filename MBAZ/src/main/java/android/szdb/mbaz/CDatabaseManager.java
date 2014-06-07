@@ -57,7 +57,7 @@ public class CDatabaseManager extends SQLiteOpenHelper{
     private static final String CREATE_TABLE_DOCHODY = "CREATE TABLE " + TABLE_DOCHODY + "(" + DOCHODY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + DOCHODY_KWOTA + " REAL," + DOCHODY_DATA + " DATE," + KDO_ID_FK_DOCHODY + " INTEGER NOT NULL, FOREIGN KEY(" + KDO_ID_FK_DOCHODY + ")" + "REFERENCES " + TABLE_KDO + "(" + KDO_ID + ")" + ")";
     private static final String CREATE_TABLE_KWY = "CREATE TABLE " + TABLE_KWY + "(" + KWY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KWY_NAZWA + " TEXT" + ")";
     private static final String CREATE_TABLE_SUBKATEGORIA = "CREATE TABLE " + TABLE_SUB + "(" + SUB_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + SUB_NAZWA + " TEXT" + ")";
-    private static final String CREATE_TABLE_WYDATKI = "CREATE TABLE " + TABLE_WYDATKI + "(" + WYDATKI_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + WYDATKI_KWOTA + " REAL," + WYDATKI_DATA + " TEXT," + KWY_ID_FK_WYDATKI + " INTEGER NOT NULL, " + SUB_ID_FK_WYDATKI + " INTEGER NOT NULL, FOREIGN KEY(" + SUB_ID_FK_WYDATKI + ")" + "REFERENCES " + TABLE_SUB + "(" + SUB_ID + "), FOREIGN KEY(" + KWY_ID_FK_WYDATKI + ")" + "REFERENCES " + TABLE_KWY + "(" + KWY_ID + ")"+ ")";
+    private static final String CREATE_TABLE_WYDATKI = "CREATE TABLE " + TABLE_WYDATKI + "(" + WYDATKI_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + WYDATKI_KWOTA + " REAL," + WYDATKI_DATA + " TEXT," + KWY_ID_FK_WYDATKI + " INTEGER NOT NULL, " + SUB_ID_FK_WYDATKI + " INTEGER, FOREIGN KEY(" + SUB_ID_FK_WYDATKI + ")" + "REFERENCES " + TABLE_SUB + "(" + SUB_ID + "), FOREIGN KEY(" + KWY_ID_FK_WYDATKI + ")" + "REFERENCES " + TABLE_KWY + "(" + KWY_ID + ")"+ ")";
     private static final String CREATE_TABLE_PLANOWANIE = "CREATE TABLE " + TABLE_PLANOWANIE + "(" + PLANOWANIE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + PLANOWANIE_NAZWA + " TEXT," + PLANOWANIE_OD + " TEXT," + PLANOWANIE_DATA_ZAK + "TEXT" +")";
 
     //USTALENIE WERSJI - nie zmieniamy
@@ -78,6 +78,23 @@ public class CDatabaseManager extends SQLiteOpenHelper{
         db.execSQL(CREATE_TABLE_SUBKATEGORIA);
         db.execSQL(CREATE_TABLE_WYDATKI);
         db.execSQL(CREATE_TABLE_PLANOWANIE);
+        db.execSQL("INSERT INTO KATEGORIE_DOCHODOW (KDO_Nazwa) VALUES ('Praca')");
+        db.execSQL("INSERT INTO KATEGORIE_DOCHODOW (KDO_Nazwa) VALUES ('Prezenty')");
+        db.execSQL("INSERT INTO KATEGORIE_DOCHODOW (KDO_Nazwa) VALUES ('Inne')");
+        db.execSQL("INSERT INTO KATEGORIE_WYDATKOW (KWY_Nazwa) VALUES ('Wyżywienie')");
+        db.execSQL("INSERT INTO KATEGORIE_WYDATKOW (KWY_Nazwa) VALUES ('Prąd')");
+        db.execSQL("INSERT INTO KATEGORIE_WYDATKOW (KWY_Nazwa) VALUES ('Woda')");
+        db.execSQL("INSERT INTO KATEGORIE_WYDATKOW (KWY_Nazwa) VALUES ('Gaz')");
+        db.execSQL("INSERT INTO KATEGORIE_WYDATKOW (KWY_Nazwa) VALUES ('Internet')");
+        db.execSQL("INSERT INTO KATEGORIE_WYDATKOW (KWY_Nazwa) VALUES ('Telefon')");
+        db.execSQL("INSERT INTO KATEGORIE_WYDATKOW (KWY_Nazwa) VALUES ('Podatki')");
+        db.execSQL("INSERT INTO KATEGORIE_WYDATKOW (KWY_Nazwa) VALUES ('Do domu')");
+        db.execSQL("INSERT INTO KATEGORIE_WYDATKOW (KWY_Nazwa) VALUES ('Elektronika')");
+        db.execSQL("INSERT INTO SUBKATEGORIA (SUB_Nazwa) VALUES ('Brak')");
+        db.execSQL("INSERT INTO SUBKATEGORIA (SUB_Nazwa) VALUES ('Dla siostry')");
+        db.execSQL("INSERT INTO SUBKATEGORIA (SUB_Nazwa) VALUES ('Dla mamy')");
+        db.execSQL("INSERT INTO SUBKATEGORIA (SUB_Nazwa) VALUES ('Dla taty')");
+
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

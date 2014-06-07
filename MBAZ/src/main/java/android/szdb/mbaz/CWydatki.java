@@ -37,4 +37,8 @@ public class CWydatki {
     public void setSUB_Id(int sUB_Id) {
         SUB_Id = sUB_Id;
     }
+    public String toString() {
+        return "Wydano " + WYD_Kwota + " Dnia " + WYD_Data + " Kategorii " + KWY_Id + " Subkategorii " + SUB_Id;
+
+    }
 }

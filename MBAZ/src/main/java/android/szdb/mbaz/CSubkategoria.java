@@ -1,8 +1,5 @@
 package android.szdb.mbaz;
 
-/**
- * Created by Michał & Adrian on 2014-05-25.
- */
 public class CSubkategoria {
     private int SUBk_1_Id; //Primary Key
     private String SUB_Nazwa;
@@ -18,5 +15,8 @@ public class CSubkategoria {
     }
     public void setSUB_Nazwa(String sUB_Nazwa) {
         SUB_Nazwa = sUB_Nazwa;
+    }
+    public String toString() {
+        return SUB_Nazwa;
     }
 }

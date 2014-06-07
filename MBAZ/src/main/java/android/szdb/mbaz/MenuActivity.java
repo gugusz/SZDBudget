@@ -22,6 +22,7 @@ public class MenuActivity extends Activity implements View.OnClickListener{
         Button buttonMenuDochody = (Button) findViewById(R.id.buttonMenuDochody);
         Button buttonMenuPlanowanie = (Button) findViewById(R.id.buttonMenuPlanowanie);
         Button buttonMenuUstawienia = (Button) findViewById(R.id.buttonMenuUstawienia);
+        Button buttonMenuKoniec = (Button) findViewById(R.id.buttonMenuClose);
 
         buttonMenuZestawienie.setOnClickListener(this);
         buttonMenuDWydatki.setOnClickListener(this);
@@ -30,6 +31,7 @@ public class MenuActivity extends Activity implements View.OnClickListener{
         buttonMenuDochody.setOnClickListener(this);
         buttonMenuPlanowanie.setOnClickListener(this);
         buttonMenuUstawienia.setOnClickListener(this);
+        buttonMenuKoniec.setOnClickListener(this);
     }
 
 
@@ -81,6 +83,9 @@ public class MenuActivity extends Activity implements View.OnClickListener{
             case R.id.buttonMenuUstawienia:
                 intent = new Intent(this, UstawieniaActivity.class);
                 startActivityForResult(intent, 1);
+                break;
+            case R.id.buttonMenuClose:
+                finish();
                 break;
         }
     }

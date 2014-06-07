@@ -17,4 +17,7 @@ public class CKat_wyd {
     public void setKWY_Nazwa(String kWY_Nazwa) {
         KWY_Nazwa = kWY_Nazwa;
     }
+    public String toString() {
+        return KWY_Nazwa;
+    }
 }

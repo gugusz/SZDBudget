@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.List;
@@ -24,7 +25,6 @@ public class WydatkiDodajActivity extends Activity implements View.OnClickListen
     private EditText kategoria;
     private CheckBox opcja;
     private Button dodajKategorie;
-    private Button dodajWydatek;
     private CBazaSystem bazaDanych;
     private List<CKat_wyd> listaKategoriiWydatkow;
     private List<CSubkategoria> listaSubkategoriiWydatkow;
@@ -41,7 +41,7 @@ public class WydatkiDodajActivity extends Activity implements View.OnClickListen
         kategoria = (EditText)findViewById(R.id.editTextDWydatkiKategoria);
         opcja = (CheckBox)findViewById(R.id.checkBoxDWydatki);
         dodajKategorie = (Button)findViewById(R.id.buttonDWydatkiKategoria);
-        dodajWydatek = (Button)findViewById(R.id.buttonDWydatkiDodaj);
+        Button dodajWydatek = (Button) findViewById(R.id.buttonDWydatkiDodaj);
         przelacznik = (ToggleButton)findViewById(R.id.toggleButtonDWydatki);
 
         opcja.setOnClickListener(this);
@@ -74,10 +74,7 @@ public class WydatkiDodajActivity extends Activity implements View.OnClickListen
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -96,23 +93,56 @@ public class WydatkiDodajActivity extends Activity implements View.OnClickListen
                 }
                 break;
             case R.id.toggleButtonDWydatki:
-
+                if(przelacznik.isChecked()){
+                    kategoria.setHint("Podaj nazwę subkategorii");
+                    dodajKategorie.setText("Dodaj subkategorię");
+                }
+                else {
+                    kategoria.setHint("Podaj nazwę kategorii");
+                    dodajKategorie.setText("Dodaj kategorię");
+                }
                 break;
             case R.id.buttonDWydatkiDodaj:
                 int tmp1 = listaKategoriiWydatkow.get(spinnerDW1.getSelectedItemPosition()).getKWYk_1_Id();// nie jestem pewnien co do tego
                 int tmp2 = listaSubkategoriiWydatkow.get(spinnerDW2.getSelectedItemPosition()).getSUBk_1_Id();// nie jestem pewnien co do tego
-                CWydatki newWYD = bazaDanych.dodajWydatki(Float.valueOf(kwota.getText().toString()),data.getText().toString(),tmp1, tmp2);
+                if (kategoria.getText().toString().equals("brak")) {
+                    bazaDanych.dodajWydatkiNull(Float.valueOf(kwota.getText().toString()), data.getText().toString(), tmp1);
+                }
+                else {
+                    bazaDanych.dodajWydatki(Float.valueOf(kwota.getText().toString()), data.getText().toString(), tmp1, tmp2);
+                }
+                kwota.setHint("Podaj kwotę");
+                kwota.setText(null);
+                data.setHint("Podaj datę dochodu");
+                data.setText(null);
                 break;
             case R.id.buttonDWydatkiKategoria:
                 //dopicać w zależności od toggle buttona
-                /*ArrayAdapter<CKat_doch> adapter = (ArrayAdapter<CKat_doch>) spinnerDD.getAdapter();
-                CKat_doch newKDO = bazaDanych.dodajKDO(kategoria.getText().toString());
-                adapter.add(newKDO);
-                kategoria.setText(null);
-                kategoria.setHint("Podaj nazwę kategorii");
-                kategoria.setEnabled(false);
-                dodajKategorie.setEnabled(false);
-                opcja.setChecked(false);*/
+                if (przelacznik.isChecked()) {
+                    if (kategoria.getText().toString().equals("brak")) {
+                        Toast.makeText(this, "Nazwa zastrzeżona", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        ArrayAdapter<CSubkategoria> adapter = (ArrayAdapter<CSubkategoria>) spinnerDW2.getAdapter();
+                        CSubkategoria newSUB = bazaDanych.dodajSubkategorie(kategoria.getText().toString());
+                        adapter.add(newSUB);
+                        kategoria.setText(null);
+                        kategoria.setHint("Podaj nazwę subkategorii");
+                        kategoria.setEnabled(false);
+                        dodajKategorie.setEnabled(false);
+                        opcja.setChecked(false);
+                    }
+                }
+                else {
+                    ArrayAdapter<CKat_wyd> adapter = (ArrayAdapter<CKat_wyd>) spinnerDW1.getAdapter();
+                    CKat_wyd newKWY = bazaDanych.dodajKWY(kategoria.getText().toString());
+                    adapter.add(newKWY);
+                    kategoria.setText(null);
+                    kategoria.setHint("Podaj nazwę kategorii");
+                    kategoria.setEnabled(false);
+                    dodajKategorie.setEnabled(false);
+                    opcja.setChecked(false);
+                }
                 break;
         }
     }

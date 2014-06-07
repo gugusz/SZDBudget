@@ -3,13 +3,17 @@ package android.szdb.mbaz;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.util.List;
@@ -19,8 +23,21 @@ public class UstawieniaActivity extends Activity implements View.OnClickListener
 
     private EditText editTextOd;
     private EditText editTextDo;
+    private Button buttonDodaj;
     private ListView listViewUstawienia;
     private CBazaSystem bazaDanych;
+    private RadioButton radioButtonOkr;
+    private RadioButton radioButtonKDO;
+    private RadioButton radioButtonKWY;
+    private RadioButton radioButtonSUB;
+    private List<COkres> listaOkr;
+    private ArrayAdapter<COkres> adapterOkr;
+    private List<CKat_doch> listaKdo;
+    private ArrayAdapter<CKat_doch> adapterKdo;
+    private List<CKat_wyd> listaKwy;
+    private ArrayAdapter<CKat_wyd> adapterKwy;
+    private List<CSubkategoria> listaSub;
+    private ArrayAdapter<CSubkategoria> adapterSub;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +45,35 @@ public class UstawieniaActivity extends Activity implements View.OnClickListener
         setContentView(R.layout.activity_ustawienia);
         editTextOd = (EditText)findViewById(R.id.editTextUstawieniaOd);
         editTextDo = (EditText)findViewById(R.id.editTextUstawieniaDo);
-        Button buttonDodaj = (Button) findViewById(R.id.buttonUstawienia);
+        buttonDodaj = (Button) findViewById(R.id.buttonUstawienia);
         listViewUstawienia = (ListView)findViewById(R.id.listViewUstawienia);
+        radioButtonOkr = (RadioButton)findViewById(R.id.radioButtonUstawieniaOkres);
+        radioButtonKDO = (RadioButton)findViewById(R.id.radioButtonUstawieniaKDO);
+        radioButtonKWY = (RadioButton)findViewById(R.id.radioButtonUstawieniaKWY);
+        radioButtonSUB = (RadioButton)findViewById(R.id.radioButtonUstawieniaSUB);
 
         buttonDodaj.setOnClickListener(this);
+        radioButtonOkr.setOnClickListener(this);
+        radioButtonKDO.setOnClickListener(this);
+        radioButtonKWY.setOnClickListener(this);
+        radioButtonSUB.setOnClickListener(this);
+        registerForContextMenu(listViewUstawienia);
 
         bazaDanych = new CBazaSystem(this);
         bazaDanych.open();
 
-        List<COkres> lista = bazaDanych.zwrocOkresy();
-        ArrayAdapter<COkres> adapter = new ArrayAdapter<COkres>(this, android.R.layout.simple_list_item_1, lista);
-        listViewUstawienia.setAdapter(adapter);
+        listaOkr = bazaDanych.zwrocOkresy();
+        adapterOkr = new ArrayAdapter<COkres>(this, android.R.layout.simple_list_item_1, listaOkr);
+        listViewUstawienia.setAdapter(adapterOkr);
+
+        listaKdo = bazaDanych.zwrocKDO();
+        adapterKdo = new ArrayAdapter<CKat_doch>(this, android.R.layout.simple_list_item_1, listaKdo);
+
+        listaKwy = bazaDanych.zwrocKWY();
+        adapterKwy = new ArrayAdapter<CKat_wyd>(this, android.R.layout.simple_list_item_1, listaKwy);
+
+        listaSub = bazaDanych.zwrocSubkategorie();
+        adapterSub = new ArrayAdapter<CSubkategoria>(this, android.R.layout.simple_list_item_1, listaSub);
     }
 
 
@@ -64,13 +99,61 @@ public class UstawieniaActivity extends Activity implements View.OnClickListener
         Intent intent = new Intent(this, MainActivity.class);
         switch (view.getId()){
             case R.id.buttonUstawienia:
-                ArrayAdapter<COkres> adapter = (ArrayAdapter<COkres>) listViewUstawienia.getAdapter();
-                COkres okr = bazaDanych.dodajOkres(editTextOd.getText().toString(), editTextDo.getText().toString());
-                adapter.add(okr);
-                editTextOd.setText(null);
-                editTextDo.setText(null);
+                if (radioButtonOkr.isChecked()) {
+                    ArrayAdapter<COkres> adapter = (ArrayAdapter<COkres>) listViewUstawienia.getAdapter();
+                    COkres okr = bazaDanych.dodajOkres(editTextOd.getText().toString(), editTextDo.getText().toString());
+                    adapter.add(okr);
+                    editTextOd.setText(null);
+                    editTextDo.setText(null);
+                    editTextOd.setHint("Podaj datę rozpoczęcia okresu");
+                    editTextDo.setHint("Podaj datę zakończenia okresu");
+                }
+                else if (radioButtonKDO.isChecked()) {
+                    ArrayAdapter<CKat_doch> adapter = (ArrayAdapter<CKat_doch>) listViewUstawienia.getAdapter();
+                    CKat_doch kdo = bazaDanych.dodajKDO(editTextOd.getText().toString());
+                    adapter.add(kdo);
+                    editTextOd.setText(null);
+                    editTextOd.setHint("Podaj nazwę kategorii dochodów");
+                }
+                else if (radioButtonKWY.isChecked()) {
+                    ArrayAdapter<CKat_wyd> adapter = (ArrayAdapter<CKat_wyd>) listViewUstawienia.getAdapter();
+                    CKat_wyd kwy = bazaDanych.dodajKWY(editTextOd.getText().toString());
+                    adapter.add(kwy);
+                    editTextOd.setText(null);
+                    editTextOd.setHint("Podaj nazwę kategorii wydatków");
+                }
+                else {
+                    ArrayAdapter<CSubkategoria> adapter = (ArrayAdapter<CSubkategoria>) listViewUstawienia.getAdapter();
+                    CSubkategoria sub = bazaDanych.dodajSubkategorie(editTextOd.getText().toString());
+                    adapter.add(sub);
+                    editTextOd.setText(null);
+                    editTextOd.setHint("Podaj nazwę subkategorii wydatków");
+                }
+                break;
+            case R.id.radioButtonUstawieniaOkres:
                 editTextOd.setHint("Podaj datę rozpoczęcia okresu");
+                editTextOd.setInputType(InputType.TYPE_CLASS_DATETIME);
                 editTextDo.setHint("Podaj datę zakończenia okresu");
+                editTextDo.setVisibility(View.VISIBLE);
+                listViewUstawienia.setAdapter(adapterOkr);
+                break;
+            case R.id.radioButtonUstawieniaKDO:
+                editTextOd.setHint("Podaj nazwę kategorii dochodów");
+                editTextOd.setInputType(InputType.TYPE_CLASS_TEXT);
+                editTextDo.setVisibility(View.INVISIBLE);
+                listViewUstawienia.setAdapter(adapterKdo);
+                break;
+            case R.id.radioButtonUstawieniaKWY:
+                editTextOd.setHint("Podaj nazwę kategorii wydatków");
+                editTextOd.setInputType(InputType.TYPE_CLASS_TEXT);
+                editTextDo.setVisibility(View.INVISIBLE);
+                listViewUstawienia.setAdapter(adapterKwy);
+                break;
+            case R.id.radioButtonUstawieniaSUB:
+                editTextOd.setHint("Podaj nazwę subkategorii wydatków");
+                editTextOd.setInputType(InputType.TYPE_CLASS_TEXT);
+                editTextDo.setVisibility(View.INVISIBLE);
+                listViewUstawienia.setAdapter(adapterSub);
                 break;
             case R.id.home:
                 setResult(Activity.RESULT_CANCELED, intent);
@@ -79,5 +162,48 @@ public class UstawieniaActivity extends Activity implements View.OnClickListener
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle("Wybierz czynność:");
+        menu.add(0, v.getId(), 0, "Usuń wpis");
+        menu.add(0, v.getId(), 0, "Edytuj wpis");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if(item.getTitle()=="Usuń wpis") {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            int index = info.position;
+            if (radioButtonOkr.isChecked()) {
+                bazaDanych.usunOkres(listaOkr.get(index));
+                listaOkr.remove(index);
+                adapterOkr.notifyDataSetChanged();
+            }
+            else if (radioButtonKDO.isChecked()) {
+                bazaDanych.usunKDO(listaKdo.get(index));
+                listaKdo.remove(index);
+                adapterKdo.notifyDataSetChanged();
+            }
+            else if (radioButtonKWY.isChecked()) {
+                bazaDanych.usunKWY(listaKwy.get(index));
+                listaKwy.remove(index);
+                adapterKwy.notifyDataSetChanged();
+            }
+            else {
+                bazaDanych.usunSubkategorie(listaSub.get(index));
+                listaSub.remove(index);
+                adapterSub.notifyDataSetChanged();
+            }
+        }
+        else if(item.getTitle()=="Edytuj wpis"){
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            int index = info.position;
+            Toast.makeText(this,String.valueOf(index),Toast.LENGTH_SHORT).show();
+        }
+        else {return false;}
+        return true;
     }
 }

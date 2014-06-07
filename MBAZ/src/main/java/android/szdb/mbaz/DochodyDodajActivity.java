@@ -1,7 +1,6 @@
 package android.szdb.mbaz;
 
 import android.app.Activity;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,7 +10,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -24,7 +22,6 @@ public class DochodyDodajActivity extends Activity implements View.OnClickListen
     private EditText kategoria;
     private CheckBox opcja;
     private Button dodajKategorie;
-    private Button dodajDochod;
     private CBazaSystem bazaDanych;
     private List<CKat_doch>listaKategoriiDochodow;
 
@@ -38,7 +35,7 @@ public class DochodyDodajActivity extends Activity implements View.OnClickListen
         kategoria = (EditText)findViewById(R.id.editTextDDochodyKategoria);
         opcja = (CheckBox)findViewById(R.id.checkBoxDDochody);
         dodajKategorie = (Button)findViewById(R.id.buttonDDochodyKategoria);
-        dodajDochod = (Button)findViewById(R.id.buttonDDochodyDodaj);
+        Button dodajDochod = (Button) findViewById(R.id.buttonDDochodyDodaj);
 
         opcja.setOnClickListener(this);
         dodajKategorie.setOnClickListener(this);
@@ -66,10 +63,7 @@ public class DochodyDodajActivity extends Activity implements View.OnClickListen
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -88,8 +82,11 @@ public class DochodyDodajActivity extends Activity implements View.OnClickListen
                 break;
             case R.id.buttonDDochodyDodaj:
                 int tmp = listaKategoriiDochodow.get(spinnerDD.getSelectedItemPosition()).getKDOk_1_Id();// nie jestem pewnien co do tego
-                //Toast.makeText(this,String.valueOf(tmp),Toast.LENGTH_SHORT).show();
-                CDochody newDOC = bazaDanych.dodajDochody(Float.valueOf(kwota.getText().toString()),data.getText().toString(),tmp);
+                bazaDanych.dodajDochody(Float.valueOf(kwota.getText().toString()),data.getText().toString(),tmp);
+                kwota.setHint("Podaj kwotę");
+                kwota.setText(null);
+                data.setHint("Podaj datę dochodu");
+                data.setText(null);
                 break;
             case R.id.buttonDDochodyKategoria:
                 ArrayAdapter<CKat_doch> adapter = (ArrayAdapter<CKat_doch>) spinnerDD.getAdapter();

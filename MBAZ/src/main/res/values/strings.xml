@@ -21,7 +21,6 @@
     <string name="title_activity_wydatki_dodaj">WydatkiDodajActivity</string>
     <string name="title_activity_dochody_dodaj">DochodyDodajActivity</string>
     <string name="buttonMenuClose">Zamknij</string>
-    <string name="textViewUstawienia">Podaj:</string>
     <string name="hintUstawieniaOd">Podaj datę rozpoczęcia okresu</string>
     <string name="hintUstawieniaDo">Podaj datę zakończenia okresu</string>
     <string name="buttonUstawienia">Dodaj</string>
@@ -43,5 +42,9 @@
     <string name="Zmiana">New ToggleButton</string>
     <string name="toggleButtonDWydatki">Kategoria/Subkategoria</string>
     <string name="textViewWydatki">Zestawienie wszystkich wydatków</string>
+    <string name="radioButtonUstawieniaOkres">Okresy</string>
+    <string name="radioButtonUstawieniaKDO">Kat.Doch</string>
+    <string name="radioButtonUstawieniaKWY">Kat.Wyd</string>
+    <string name="radioButtonUstawieniaSUB">Subk.</string>
 
 </resources>

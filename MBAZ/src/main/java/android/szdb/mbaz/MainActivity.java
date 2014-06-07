@@ -42,7 +42,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
         switch (view.getId()){
             case R.id.buttonMain:
                 intent = new Intent(this, MenuActivity.class);
-                startActivityForResult(intent, 1);
+                startActivity(intent);
+                finish();
                 break;
         }
     }
