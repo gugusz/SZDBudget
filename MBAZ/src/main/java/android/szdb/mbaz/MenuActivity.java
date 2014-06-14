@@ -8,9 +8,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-
+/**
+ * Klasa odpowiadajaca za wywwietlanie aktywnosci menu
+ * @author Michal Bednarz & Adrian Zyzda
+ * @version 1.0
+ */
 public class MenuActivity extends Activity implements View.OnClickListener{
 
+    /**
+     * Metoda bedaca w pewnym sensie konstruktorem. Wywolywana jest podczas tworzenia aktywnosci. Przypisuje id kontrolek do pol klasy, ustawia OnClickListenera
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +42,6 @@ public class MenuActivity extends Activity implements View.OnClickListener{
         buttonMenuKoniec.setOnClickListener(this);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -51,6 +58,10 @@ public class MenuActivity extends Activity implements View.OnClickListener{
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Metoda odopwiadajaca za obluge eventow jakie zaszly za pomoca kliknieca
+     * @param view kontrolka klay View
+     */
     @Override
     public void onClick(View view) {
 

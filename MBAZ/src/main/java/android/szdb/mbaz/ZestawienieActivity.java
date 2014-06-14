@@ -1,6 +1,7 @@
 package android.szdb.mbaz;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +13,20 @@ public class ZestawienieActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zestawienie);
+/*
+        PieGraph pg = (PieGraph)findViewById(R.id.graph);
+        PieSlice slice = new PieSlice();
+        slice.setColor(Color.parseColor("#99CC00"));
+        slice.setValue(2);
+        pg.addSlice(slice);
+        slice = new PieSlice();
+        slice.setColor(Color.parseColor("#FFBB33"));
+        slice.setValue(3);
+        pg.addSlice(slice);
+        slice = new PieSlice();
+        slice.setColor(Color.parseColor("#AA66CC"));
+        slice.setValue(8);
+        pg.addSlice(slice);*/
     }
 
 

@@ -8,7 +8,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-
+/**
+ * Klasa odpowiadajaca za wywwietlanie pierwszej aktywnosci z logo
+ * @author Michal Bednarz & Adrian Zyzda
+ * @version 1.0
+ */
 public class MainActivity extends Activity implements View.OnClickListener{
 
     @Override

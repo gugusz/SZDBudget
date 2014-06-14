@@ -15,7 +15,11 @@ import android.widget.ToggleButton;
 
 import java.util.List;
 
-
+/**
+ * Klasa odpowiadajaca za wywwietlanie aktywnosci dodaj wydatki
+ * @author Michal Bednarz & Adrian Zyzda
+ * @version 1.0
+ */
 public class WydatkiDodajActivity extends Activity implements View.OnClickListener{
 
     private EditText kwota;
@@ -30,6 +34,11 @@ public class WydatkiDodajActivity extends Activity implements View.OnClickListen
     private List<CSubkategoria> listaSubkategoriiWydatkow;
     private ToggleButton przelacznik;
 
+    /**
+     * Metoda bedaca w pewnym sensie konstruktorem. Wywolywana jest podczas tworzenia aktywnosci. Przypisuje id kontrolek do pol klasy
+     * Otwiera baze danych, tworzy ArrayAdapter w ktorym przechowaywane sa rekordy bazy, ustawia OnClickListenera
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +86,10 @@ public class WydatkiDodajActivity extends Activity implements View.OnClickListen
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Metoda odopwiadajaca za obluge eventow jakie zaszly za pomoca kliknieca
+     * @param view kontrolka klay View
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()){

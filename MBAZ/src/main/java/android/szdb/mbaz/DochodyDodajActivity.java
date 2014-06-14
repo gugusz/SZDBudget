@@ -13,7 +13,11 @@ import android.widget.Spinner;
 
 import java.util.List;
 
-
+/**
+ * Klasa odpowiadajaca za wywwietlanie aktywnosci dodaj dochody
+ * @author Michal Bednarz & Adrian Zyzda
+ * @version 1.0
+ */
 public class DochodyDodajActivity extends Activity implements View.OnClickListener{
 
     private EditText kwota;
@@ -25,6 +29,11 @@ public class DochodyDodajActivity extends Activity implements View.OnClickListen
     private CBazaSystem bazaDanych;
     private List<CKat_doch>listaKategoriiDochodow;
 
+    /**
+     * Metoda bedaca w pewnym sensie konstruktorem. Wywolywana jest podczas tworzenia aktywnosci. Przypisuje id kontrolek do pol klasy, ustawia OnClickListenera
+     * tworzy baze danych, ArrayAdaptera w ktrym sa rekordy
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +75,10 @@ public class DochodyDodajActivity extends Activity implements View.OnClickListen
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Metoda odopwiadajaca za obluge eventow jakie zaszly za pomoca kliknieca
+     * @param view kontrolka klay View
+     */
     @Override
     public void onClick(View view) {
 

@@ -4,6 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * Klasa zawierajaca logiczna strukture tabel w bazie danych
+ * @author Michal Bednarz & Adrian Zyzda
+ * @version 2
+ */
 public class CDatabaseManager extends SQLiteOpenHelper{
     //OKRES
     public static final String TABLE_OKRES = "OKRES";
@@ -64,11 +69,19 @@ public class CDatabaseManager extends SQLiteOpenHelper{
     //USTALENIE WERSJI - nie zmieniamy
     private static final int DB_WERSJA = 2;
 
+    /**
+     * konstruktor klasy
+     * @param context wymagany parametr do wywaloania konstruktora z klasy nadrzednej
+     */
     public CDatabaseManager(Context context) {
         super(context, DB_NAZWA, null, DB_WERSJA);
         // TODO Auto-generated constructor stub
     }
 
+    /**
+     * Nadpisana metoda ktora tworzy tabele w bazie danych i wstawia podstawowe wpisy
+     * @param db obiekt bazy danych
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         // TODO Auto-generated method stub
@@ -97,6 +110,13 @@ public class CDatabaseManager extends SQLiteOpenHelper{
         db.execSQL("INSERT INTO SUBKATEGORIA (SUB_Nazwa) VALUES ('Dla taty')");
 
     }
+
+    /**
+     * Metoda wywolywana przy aktualizowaniu wersji bazy danych
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO Auto-generated method stub

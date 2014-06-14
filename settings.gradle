@@ -1,1 +1,1 @@
-include ':MBAZ'
+include ':MBAZ', ':app'

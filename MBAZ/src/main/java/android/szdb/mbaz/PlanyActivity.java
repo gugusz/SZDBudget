@@ -18,7 +18,11 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
-
+/**
+ * Klasa odpowiadajaca za wywwietlanie aktywnosci planowanie
+ * @author Michal Bednarz & Adrian Zyzda
+ * @version 1.0
+ */
 public class PlanyActivity extends Activity implements View.OnClickListener{
 
     private EditText nazwa;
@@ -31,6 +35,12 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
     private ListView listaViewPlany;
     private List<CPlanowanie> lista;
     private ArrayAdapter<CPlanowanie> adapter;
+
+    /**
+     * Metoda bedaca w pewnym sensie konstruktorem. Wywolywana jest podczas tworzenia aktywnosci. Przypisuje id kontrolek do pol klasy
+     * Otwiera baze danych, tworzy ArrayAdapter w ktorym przechowaywane sa rekordy bazy, ustawia OnClickListenera
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +84,10 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Metoda odopwiadajaca za obluge eventow jakie zaszly za pomoca kliknieca
+     * @param view kontrolka klay View
+     */
     @Override
     public void onClick(View view) {
 
@@ -97,6 +111,13 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
                 break;
         }
     }
+
+    /**
+     * Tworzy menu kontekstowe
+     * @param menu menu
+     * @param v kontrolka
+     * @param menuInfo informacja o menu
+     */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -105,6 +126,11 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
         menu.add(0, v.getId(), 0, "Edytuj wpis");
     }
 
+    /**
+     * Metoda obsluujaca klikniece w menu kontekstowym
+     * @param item wybrany element menu
+     * @return wartosc boolowska
+     */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if(item.getTitle()=="Usuń wpis") {
@@ -123,6 +149,10 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
         return true;
     }
 
+    /**
+     * Metoda obliczajaca kwote ktora nalezy oszczedzic
+     * @return
+     */
     private float obliczKwote() {
         return 0.0f;
     }
