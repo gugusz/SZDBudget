@@ -465,11 +465,12 @@ public class CBazaSystem {
      * @param datazak data kiedy ma byc planowany zakup
      * @return utworzony obiekt z danych
      */
-    public CPlanowanie dodajPlan(String nazwa, String od, String datazak){
+    public CPlanowanie dodajPlan(String nazwa, String od, String datazak, float cena){
         ContentValues cv = new ContentValues();
         cv.put(CDatabaseManager.PLANOWANIE_NAZWA, nazwa);
         cv.put(CDatabaseManager.PLANOWANIE_OD, od);
         cv.put(CDatabaseManager.PLANOWANIE_DATA_ZAK, datazak);
+        cv.put(CDatabaseManager.PLANOWANIE_CENA, cena);
         long plaID = dbPLanowanie.insert(CDatabaseManager.TABLE_PLANOWANIE, null, cv);
         Cursor kursor = dbPLanowanie.query(CDatabaseManager.TABLE_PLANOWANIE, PLANOWANIE_REKORD, CDatabaseManager.PLANOWANIE_ID + " = " + plaID, null, null, null, null);
         kursor.moveToFirst();

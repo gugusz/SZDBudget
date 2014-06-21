@@ -52,5 +52,7 @@
     <string name="editTextPlanyCo">Podaj nazwę przedmiotu</string>
     <string name="textViewWynik">W tym okresie musisz odłożyć:</string>
     <string name="editTextPlanyCena">Podaj cenę planowanej rzeczy</string>
+    <string name="title_activity_main_activity2">MainActivity2</string>
+    <string name="textViewPlany">Lista planowanych inwestycji:</string>
 
 </resources>

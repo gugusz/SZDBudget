@@ -102,6 +102,14 @@ public class UstawieniaActivity extends Activity implements View.OnClickListener
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MenuActivity.class);
+        setResult(Activity.RESULT_CANCELED, intent);
+        bazaDanych.close();
+        finish();
+    }
+
     /**
      * Metoda odopwiadajaca za obluge eventow jakie zaszly za pomoca kliknieca
      * @param view kontrolka klay View

@@ -46,7 +46,7 @@ public class PieGraph extends View {
     private ArrayList<PieSlice> mSlices = new ArrayList<PieSlice>();
     private Paint mPaint = new Paint();
     private int mSelectedIndex = -1;
-    //private OnSliceClickedListener mListener;
+    private OnSliceClickedListener mListener;
     private boolean mDrawCompleted = false;
     private RectF mRectF = new RectF();
 
@@ -64,10 +64,9 @@ public class PieGraph extends View {
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.PieGraph, 0, 0);
         mInnerCircleRatio = a.getInt(R.styleable.PieGraph_pieInnerCircleRatio, 0);
         mPadding = a.getDimensionPixelSize(R.styleable.PieGraph_pieSlicePadding, 0);
-
     }
 
-    /*public void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas) {
         float midX, midY, radius, innerRadius;
 
         canvas.drawColor(Color.TRANSPARENT);
@@ -206,5 +205,5 @@ public class PieGraph extends View {
 
     public interface OnSliceClickedListener {
         public abstract void onClick(int index);
-    }*/
+    }
 }

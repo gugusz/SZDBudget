@@ -1,6 +1,7 @@
 package android.szdb.mbaz;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -63,6 +64,14 @@ public class WydatkiActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MenuActivity.class);
+        setResult(Activity.RESULT_CANCELED, intent);
+        bazaDanych.close();
+        finish();
     }
 
     /**

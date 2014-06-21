@@ -1,6 +1,7 @@
 package android.szdb.mbaz;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -11,10 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
-
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,10 +32,14 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
     private EditText cena;
     private Button buttonDodaj;
     private CBazaSystem bazaDanych;
-    private TextView wynik;
     private ListView listaViewPlany;
     private List<CPlanowanie> lista;
     private ArrayAdapter<CPlanowanie> adapter;
+    private Spinner spinnerPlany;
+    //private ArrayAdapter<COkres>adapterPlany;
+    private ArrayPlanyAdapter adapterPlany;
+    private List<COkres> okresy;
+    private List<Float> kwoty;
 
     /**
      * Metoda bedaca w pewnym sensie konstruktorem. Wywolywana jest podczas tworzenia aktywnosci. Przypisuje id kontrolek do pol klasy
@@ -51,8 +56,7 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
         cena = (EditText)findViewById(R.id.editTextPlanyCena);
         buttonDodaj = (Button)findViewById(R.id.buttonPlanyDodaj);
         listaViewPlany = (ListView) findViewById(R.id.listViewPlany);
-        wynik = (TextView) findViewById(R.id.textViewWynik);
-        wynik.setText("W tym okresie musisz odłożyć: " + this.obliczKwote() + "zł");
+        spinnerPlany = (Spinner) findViewById(R.id.spinnerPlany);
 
         bazaDanych = new CBazaSystem(this);
         bazaDanych.open();
@@ -60,8 +64,21 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
         registerForContextMenu(listaViewPlany);
 
         lista = bazaDanych.zwrocPlany();
+        okresy = bazaDanych.zwrocOkresy();
+
         adapter = new ArrayAdapter<CPlanowanie>(this, android.R.layout.simple_list_item_1, lista);
         listaViewPlany.setAdapter(adapter);
+
+        kwoty = new ArrayList<Float>();
+        this.obliczKwote();
+        //Toast.makeText(this, String.valueOf(kwoty.get(0)), Toast.LENGTH_SHORT).show();
+
+        adapterPlany = new ArrayPlanyAdapter(this, R.layout.textvievplany, okresy, kwoty);
+        spinnerPlany.setAdapter(adapterPlany);
+
+        //CData d1 = new CData("2014-02-23");
+        //CData d2 = new CData("2014-03-04");
+        //Toast.makeText(this, String.valueOf(d1.compareTo(d2)),Toast.LENGTH_LONG).show();
     }
 
 
@@ -84,6 +101,14 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MenuActivity.class);
+        setResult(Activity.RESULT_CANCELED, intent);
+        bazaDanych.close();
+        finish();
+    }
+
     /**
      * Metoda odopwiadajaca za obluge eventow jakie zaszly za pomoca kliknieca
      * @param view kontrolka klay View
@@ -97,7 +122,7 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
                     od.setText(DateFormat.getDateInstance().format(new Date()));
                 }
                 ArrayAdapter<CPlanowanie> adapter = (ArrayAdapter<CPlanowanie>) listaViewPlany.getAdapter();
-                CPlanowanie pla = bazaDanych.dodajPlan(nazwa.getText().toString(), od.getText().toString(), dataZakupu.getText().toString());
+                CPlanowanie pla = bazaDanych.dodajPlan(nazwa.getText().toString(), od.getText().toString(), dataZakupu.getText().toString(), Float.valueOf(cena.getText().toString()));
                 adapter.add(pla);
                 od.setHint("Podaj datę od kiedy chcesz oszczędzać");
                 od.setText("");
@@ -107,7 +132,9 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
                 nazwa.setText("");
                 cena.setHint("Podaj cenę planowanej rzeczy");
                 cena.setText("");
-                wynik.setText("W tym okresie musisz odłożyć: " + this.obliczKwote() + "zł");
+                kwoty.clear();
+                this.obliczKwote();
+                adapterPlany.notifyDataSetChanged();
                 break;
         }
     }
@@ -149,11 +176,37 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
         return true;
     }
 
-    /**
-     * Metoda obliczajaca kwote ktora nalezy oszczedzic
-     * @return
-     */
-    private float obliczKwote() {
-        return 0.0f;
+    private void obliczKwote() {
+        int ilePlanow[] = new int[lista.size()];
+        CData d1, d2, d3, d4;
+
+        for (int i = 0; i < lista.size(); i++)
+        {
+            d1 = new CData(lista.get(i).getPLA_Od());
+            d3 = new CData(lista.get(i).getPLA_DataZakupu());
+
+            for (int j = 0; j < okresy.size(); j++)
+            {
+                d2 = new CData(okresy.get(j).getOKR_Od());
+                d4 = new CData(okresy.get(j).getOKR_Do());
+                if ((d1.compareTo(d2) == -1 || d1.compareTo(d2) == 0) && (d3.compareTo(d4) == 1 || d3.compareTo(d4) == 0))
+                    ilePlanow[i]++;
+                //else
+                    //ilePlanow[i]--;
+            }
+        }
+
+        for (int i = 0; i < okresy.size(); i++) {
+            float tmp = 0.0f;
+            d2 = new CData(okresy.get(i).getOKR_Od());
+            d4 = new CData(okresy.get(i).getOKR_Do());
+            for (int j = 0; j < lista.size(); j++) {
+                d1 = new CData(lista.get(j).getPLA_Od());
+                d3 = new CData(lista.get(j).getPLA_DataZakupu());
+                if ((d1.compareTo(d2) == -1 || d1.compareTo(d2) == 0) && (d3.compareTo(d4) == 1 || d3.compareTo(d4) == 0))
+                    tmp = tmp + lista.get(j).getPLA_Cena() / ilePlanow[j];
+            }
+            kwoty.add(tmp);
+        }
     }
 }

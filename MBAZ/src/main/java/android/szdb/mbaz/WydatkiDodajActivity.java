@@ -1,6 +1,7 @@
 package android.szdb.mbaz;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,6 +85,14 @@ public class WydatkiDodajActivity extends Activity implements View.OnClickListen
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MenuActivity.class);
+        setResult(Activity.RESULT_CANCELED, intent);
+        bazaDanych.close();
+        finish();
     }
 
     /**

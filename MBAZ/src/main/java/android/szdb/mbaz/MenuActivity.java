@@ -96,7 +96,8 @@ public class MenuActivity extends Activity implements View.OnClickListener{
                 startActivityForResult(intent, 1);
                 break;
             case R.id.buttonMenuClose:
-                finish();
+                //finish();
+                System.exit(0);
                 break;
         }
     }

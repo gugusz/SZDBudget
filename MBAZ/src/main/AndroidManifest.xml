@@ -48,6 +48,10 @@
             android:name="android.szdb.mbaz.DochodyDodajActivity"
             android:label="@string/title_activity_dochody_dodaj" >
         </activity>
+        <activity
+            android:name="android.szdb.mbaz.MainActivity2"
+            android:label="@string/title_activity_main_activity2" >
+        </activity>
     </application>
 
 </manifest>
