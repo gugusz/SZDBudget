@@ -24,7 +24,8 @@ public class DochodyActivity extends Activity implements View.OnCreateContextMen
     private ListView listViewDochody;
     private CBazaSystem bazaDanych;
     private List<CDochody> lista;
-    private ArrayAdapter<CDochody> adapter;
+    private ArrayDochodyAdapter adapter;
+    private List<CKat_doch> kategorie;
 
     /**
      * Metoda bedaca w pewnym sensie konstruktorem. Wywolywana jest podczas tworzenia aktywnosci. Przypisuje id kontrolek do pol klasy
@@ -41,8 +42,9 @@ public class DochodyActivity extends Activity implements View.OnCreateContextMen
         bazaDanych = new CBazaSystem(this);
         bazaDanych.open();
 
+        kategorie = bazaDanych.zwrocKDO();
         lista = bazaDanych.zwrocDochody();
-        adapter = new ArrayAdapter<CDochody>(this, android.R.layout.simple_list_item_1, lista);
+        adapter = new ArrayDochodyAdapter(this, R.layout.textview_adapter, lista, kategorie);
         listViewDochody.setAdapter(adapter);
     }
 

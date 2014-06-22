@@ -16,11 +16,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-import java.text.DateFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -81,7 +80,7 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
         this.obliczKwote();
         //Toast.makeText(this, String.valueOf(kwoty.get(0)), Toast.LENGTH_SHORT).show();
 
-        adapterPlany = new ArrayPlanyAdapter(this, R.layout.textvievplany, okresy, kwoty);
+        adapterPlany = new ArrayPlanyAdapter(this, R.layout.textview_adapter, okresy, kwoty);
         spinnerPlany.setAdapter(adapterPlany);
     }
 

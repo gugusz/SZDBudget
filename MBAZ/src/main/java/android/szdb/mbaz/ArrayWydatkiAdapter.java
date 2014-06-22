@@ -9,19 +9,20 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import java.util.List;
 
-public class ArrayPlanyAdapter extends ArrayAdapter<COkres> {
-
+public class ArrayWydatkiAdapter extends ArrayAdapter{
     private Context mContext;
     private int mResource;
-    private List<Float> kwoty;
-    private List<COkres> okr;
+    private List<CWydatki> wydatki;
+    private List<CKat_wyd> kategorie;
+    private List<CSubkategoria> subkategorie;
 
-    public ArrayPlanyAdapter(Context context, int resource, List objects, List objects2) {
+    public ArrayWydatkiAdapter(Context context, int resource, List objects, List objects2, List objects3) {
         super(context, resource, objects);
         this.mContext = context;
         this.mResource = resource;
-        this.kwoty = objects2;
-        this.okr = objects;
+        this.wydatki = objects;
+        this.kategorie = objects2;
+        this.subkategorie = objects3;
     }
 
     private View createViewFromResource(int position, View convertView, ViewGroup parent) {
@@ -42,7 +43,7 @@ public class ArrayPlanyAdapter extends ArrayAdapter<COkres> {
         {
             text = (TextView)view.getTag();
         }
-        text.setText("W okresie " + okr.get(position).toString() + " musisz oszczędzić " + kwoty.get(position) + "zł");
+        text.setText(wydatki.get(position).toString() + ", kategorii:  " + kategorie.get(wydatki.get(position).getKWY_Id() - 1).toString() + ", subkategorii: " + subkategorie.get(wydatki.get(position).getSUB_Id() - 1).toString());
         return view;
     }
 

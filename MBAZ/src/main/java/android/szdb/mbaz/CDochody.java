@@ -80,6 +80,6 @@ public class CDochody {
      * @return Sformatowany lancuch znakow
      */
     public String toString() {
-        return "Dodano " + DOC_Kwota + "zł, Dnia " + DOC_Data + " Kategorii " + KDO_Id;
+        return "Dodano " + DOC_Kwota + "zł, Dnia " + DOC_Data;
     }
 }

@@ -24,7 +24,9 @@ public class WydatkiActivity extends Activity {
     private ListView listViewWydatki;
     private CBazaSystem bazaDanych;
     private List<CWydatki> lista;
-    private ArrayAdapter<CWydatki> adapter;
+    private ArrayWydatkiAdapter adapter;
+    private List<CKat_wyd> kategorie;
+    private List<CSubkategoria> subkategoria;
 
     /**
      * Metoda bedaca w pewnym sensie konstruktorem. Wywolywana jest podczas tworzenia aktywnosci. Przypisuje id kontrolek do pol klasy
@@ -41,8 +43,10 @@ public class WydatkiActivity extends Activity {
         bazaDanych = new CBazaSystem(this);
         bazaDanych.open();
 
+        kategorie = bazaDanych.zwrocKWY();
+        subkategoria = bazaDanych.zwrocSubkategorie();
         lista = bazaDanych.zwrocWydatki();
-        adapter = new ArrayAdapter<CWydatki>(this, android.R.layout.simple_list_item_1, lista);
+        adapter = new ArrayWydatkiAdapter(this, R.layout.textview_adapter, lista, kategorie, subkategoria);
         listViewWydatki.setAdapter(adapter);
     }
 
