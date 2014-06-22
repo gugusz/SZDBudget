@@ -1,6 +1,7 @@
 package android.szdb.mbaz;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,10 +10,15 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Klasa odpowiadajaca za wywwietlanie aktywnosci dodaj dochody
@@ -29,6 +35,7 @@ public class DochodyDodajActivity extends Activity implements View.OnClickListen
     private Button dodajKategorie;
     private CBazaSystem bazaDanych;
     private List<CKat_doch>listaKategoriiDochodow;
+    private Calendar myCalendar = Calendar.getInstance();
 
     /**
      * Metoda bedaca w pewnym sensie konstruktorem. Wywolywana jest podczas tworzenia aktywnosci. Przypisuje id kontrolek do pol klasy, ustawia OnClickListenera
@@ -50,6 +57,7 @@ public class DochodyDodajActivity extends Activity implements View.OnClickListen
         opcja.setOnClickListener(this);
         dodajKategorie.setOnClickListener(this);
         dodajDochod.setOnClickListener(this);
+        data.setOnClickListener(this);
 
         bazaDanych = new CBazaSystem(this);
         bazaDanych.open();
@@ -59,6 +67,25 @@ public class DochodyDodajActivity extends Activity implements View.OnClickListen
         spinnerDD.setAdapter(adapterKDO);
     }
 
+    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            // TODO Auto-generated method stub
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+    };
+
+    private void updateLabel() {
+
+        String myFormat = "yyyy-MM-dd"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        data.setText(sdf.format(myCalendar.getTime()));
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,6 +130,10 @@ public class DochodyDodajActivity extends Activity implements View.OnClickListen
                 }
                 break;
             case R.id.buttonDDochodyDodaj:
+                if (kwota.getText().toString().isEmpty() && data.getText().toString().isEmpty()) {
+                    Toast.makeText(this, "Wypełnij wszystkie pola!", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 int tmp = listaKategoriiDochodow.get(spinnerDD.getSelectedItemPosition()).getKDOk_1_Id();// nie jestem pewnien co do tego
                 bazaDanych.dodajDochody(Float.valueOf(kwota.getText().toString()),data.getText().toString(),tmp);
                 kwota.setHint("Podaj kwotę");
@@ -111,6 +142,10 @@ public class DochodyDodajActivity extends Activity implements View.OnClickListen
                 data.setText(null);
                 break;
             case R.id.buttonDDochodyKategoria:
+                if (kategoria.getText().toString().isEmpty()) {
+                    Toast.makeText(this, "Wypełnij wszystkie pola!", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 ArrayAdapter<CKat_doch> adapter = (ArrayAdapter<CKat_doch>) spinnerDD.getAdapter();
                 CKat_doch newKDO = bazaDanych.dodajKDO(kategoria.getText().toString());
                 adapter.add(newKDO);
@@ -119,6 +154,9 @@ public class DochodyDodajActivity extends Activity implements View.OnClickListen
                 kategoria.setEnabled(false);
                 dodajKategorie.setEnabled(false);
                 opcja.setChecked(false);
+                break;
+            case R.id.editTextDDochodyData:
+                new DatePickerDialog(this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
                 break;
         }
     }

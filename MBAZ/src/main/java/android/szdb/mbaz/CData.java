@@ -1,5 +1,7 @@
 package android.szdb.mbaz;
 
+import java.io.Console;
+
 /**
  * Created by Michał & Adrian on 2014-06-21.
  */
@@ -72,16 +74,23 @@ public class CData {
             return 0;
             //Daty są równe
         }
-
         else if (this.getRok() < druga.getRok()) {
             return -1;
             //Data pierwsza jest mniejsza od drugiej
         }
+        else if (this.getRok() > druga.getRok())
+            return 1;
         else if (this.getMiesiac() < druga.getMiesiac())
             return -1;
+        else if (this.getMiesiac() > druga.getMiesiac())
+            return 1;
         else if (this.getDzien() < druga.getDzien())
             return -1;
-        else
+        else if (this.getDzien() > druga.getDzien())
             return 1;
+        else {
+            System.out.println("Dupa");
+            return 2;
+        }
     }
 }

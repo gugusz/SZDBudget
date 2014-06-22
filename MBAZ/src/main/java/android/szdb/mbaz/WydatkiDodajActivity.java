@@ -1,6 +1,7 @@
 package android.szdb.mbaz;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,12 +10,16 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Klasa odpowiadajaca za wywwietlanie aktywnosci dodaj wydatki
@@ -34,6 +39,7 @@ public class WydatkiDodajActivity extends Activity implements View.OnClickListen
     private List<CKat_wyd> listaKategoriiWydatkow;
     private List<CSubkategoria> listaSubkategoriiWydatkow;
     private ToggleButton przelacznik;
+    private Calendar myCalendar = Calendar.getInstance();
 
     /**
      * Metoda bedaca w pewnym sensie konstruktorem. Wywolywana jest podczas tworzenia aktywnosci. Przypisuje id kontrolek do pol klasy
@@ -58,6 +64,7 @@ public class WydatkiDodajActivity extends Activity implements View.OnClickListen
         przelacznik.setOnClickListener(this);
         dodajKategorie.setOnClickListener(this);
         dodajWydatek.setOnClickListener(this);
+        data.setOnClickListener(this);
 
         bazaDanych = new CBazaSystem(this);
         bazaDanych.open();
@@ -68,6 +75,28 @@ public class WydatkiDodajActivity extends Activity implements View.OnClickListen
         listaSubkategoriiWydatkow = bazaDanych.zwrocSubkategorie();
         ArrayAdapter<CSubkategoria> adapterSUB = new ArrayAdapter<CSubkategoria>(this, android.R.layout.simple_list_item_1, listaSubkategoriiWydatkow);
         spinnerDW2.setAdapter(adapterSUB);
+    }
+
+
+
+    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            // TODO Auto-generated method stub
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+    };
+
+    private void updateLabel() {
+
+        String myFormat = "yyyy-MM-dd"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        data.setText(sdf.format(myCalendar.getTime()));
     }
 
 
@@ -125,6 +154,10 @@ public class WydatkiDodajActivity extends Activity implements View.OnClickListen
                 }
                 break;
             case R.id.buttonDWydatkiDodaj:
+                if (kwota.getText().toString().isEmpty() && data.getText().toString().isEmpty()) {
+                    Toast.makeText(this, "Wypełnij wszystkie pola!", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 int tmp1 = listaKategoriiWydatkow.get(spinnerDW1.getSelectedItemPosition()).getKWYk_1_Id();// nie jestem pewnien co do tego
                 int tmp2 = listaSubkategoriiWydatkow.get(spinnerDW2.getSelectedItemPosition()).getSUBk_1_Id();// nie jestem pewnien co do tego
                 if (kategoria.getText().toString().equals("brak")) {
@@ -140,7 +173,11 @@ public class WydatkiDodajActivity extends Activity implements View.OnClickListen
                 break;
             case R.id.buttonDWydatkiKategoria:
                 //dopicać w zależności od toggle buttona
-                if (przelacznik.isChecked()) {
+                if (kategoria.getText().toString().isEmpty()) {
+                    Toast.makeText(this, "Wypełnij wszystkie pola!", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                else if (przelacznik.isChecked()) {
                     if (kategoria.getText().toString().equals("brak")) {
                         Toast.makeText(this, "Nazwa zastrzeżona", Toast.LENGTH_SHORT).show();
                     }
@@ -165,6 +202,9 @@ public class WydatkiDodajActivity extends Activity implements View.OnClickListen
                     dodajKategorie.setEnabled(false);
                     opcja.setChecked(false);
                 }
+                break;
+            case R.id.editTextDWydatkiData:
+                new DatePickerDialog(this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
                 break;
         }
     }

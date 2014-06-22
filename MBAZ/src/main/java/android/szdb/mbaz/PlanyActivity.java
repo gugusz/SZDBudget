@@ -1,6 +1,7 @@
 package android.szdb.mbaz;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -10,14 +11,18 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Klasa odpowiadajaca za wywwietlanie aktywnosci planowanie
@@ -36,10 +41,11 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
     private List<CPlanowanie> lista;
     private ArrayAdapter<CPlanowanie> adapter;
     private Spinner spinnerPlany;
-    //private ArrayAdapter<COkres>adapterPlany;
     private ArrayPlanyAdapter adapterPlany;
     private List<COkres> okresy;
     private List<Float> kwoty;
+    private Calendar myCalendarOd = Calendar.getInstance();
+    private Calendar myCalendarDataZakupu = Calendar.getInstance();
 
     /**
      * Metoda bedaca w pewnym sensie konstruktorem. Wywolywana jest podczas tworzenia aktywnosci. Przypisuje id kontrolek do pol klasy
@@ -61,6 +67,8 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
         bazaDanych = new CBazaSystem(this);
         bazaDanych.open();
         buttonDodaj.setOnClickListener(this);
+        od.setOnClickListener(this);
+        dataZakupu.setOnClickListener(this);
         registerForContextMenu(listaViewPlany);
 
         lista = bazaDanych.zwrocPlany();
@@ -75,12 +83,44 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
 
         adapterPlany = new ArrayPlanyAdapter(this, R.layout.textvievplany, okresy, kwoty);
         spinnerPlany.setAdapter(adapterPlany);
-
-        //CData d1 = new CData("2014-02-23");
-        //CData d2 = new CData("2014-03-04");
-        //Toast.makeText(this, String.valueOf(d1.compareTo(d2)),Toast.LENGTH_LONG).show();
     }
 
+    DatePickerDialog.OnDateSetListener dateOd = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            myCalendarOd.set(Calendar.YEAR, year);
+            myCalendarOd.set(Calendar.MONTH, monthOfYear);
+            myCalendarOd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel(1);
+        }
+    };
+
+    DatePickerDialog.OnDateSetListener dateDataZakupu = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            myCalendarDataZakupu.set(Calendar.YEAR, year);
+            myCalendarDataZakupu.set(Calendar.MONTH, monthOfYear);
+            myCalendarDataZakupu.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel(2);
+        }
+    };
+
+    private void updateLabel(int numer) {
+
+        String myFormat = "yyyy-MM-dd"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        switch (numer) {
+            case 1:
+                od.setText(sdf.format(myCalendarOd.getTime()));
+                break;
+            case 2:
+                dataZakupu.setText(sdf.format(myCalendarDataZakupu.getTime()));
+                break;
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -118,8 +158,20 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
 
         switch (view.getId()){
             case R.id.buttonPlanyDodaj:
-                if (od.getText().toString().matches("")) {
-                    od.setText(DateFormat.getDateInstance().format(new Date()));
+                CData tmp1 = new CData(okresy.get(okresy.size() - 1).getOKR_Do());
+                CData tmp2 = new CData(dataZakupu.getText().toString());
+                CData tmp3 = new CData(od.getText().toString());
+                if (nazwa.getText().toString().isEmpty() && od.getText().toString().isEmpty() && dataZakupu.getText().toString().isEmpty() && cena.getText().toString().isEmpty()) {
+                    Toast.makeText(this, "Wypełnij wszystkie pola!", Toast.LENGTH_LONG).show();
+                    break;
+                }
+                else if (tmp1.compareTo(tmp2) == -1) {
+                    Toast.makeText(this, tmp1.getData().toString() + " Zanim dodasz plan, uzupełnij okresy!", Toast.LENGTH_LONG).show();
+                    break;
+                }
+                else if (tmp3.compareTo(tmp2) == 1) {
+                    Toast.makeText(this, "Data zakupu nie może być mniejsza od daty zaczynającej oszczędzanie!", Toast.LENGTH_LONG).show();
+                    break;
                 }
                 ArrayAdapter<CPlanowanie> adapter = (ArrayAdapter<CPlanowanie>) listaViewPlany.getAdapter();
                 CPlanowanie pla = bazaDanych.dodajPlan(nazwa.getText().toString(), od.getText().toString(), dataZakupu.getText().toString(), Float.valueOf(cena.getText().toString()));
@@ -135,6 +187,12 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
                 kwoty.clear();
                 this.obliczKwote();
                 adapterPlany.notifyDataSetChanged();
+                break;
+            case R.id.editTextPlanyOd:
+                new DatePickerDialog(this, dateOd, myCalendarOd.get(Calendar.YEAR), myCalendarOd.get(Calendar.MONTH), myCalendarOd.get(Calendar.DAY_OF_MONTH)).show();
+                break;
+            case R.id.editTextPlanyDo:
+                new DatePickerDialog(this, dateDataZakupu, myCalendarDataZakupu.get(Calendar.YEAR), myCalendarDataZakupu.get(Calendar.MONTH), myCalendarDataZakupu.get(Calendar.DAY_OF_MONTH)).show();
                 break;
         }
     }
@@ -189,10 +247,8 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
             {
                 d2 = new CData(okresy.get(j).getOKR_Od());
                 d4 = new CData(okresy.get(j).getOKR_Do());
-                if ((d1.compareTo(d2) == -1 || d1.compareTo(d2) == 0) && (d3.compareTo(d4) == 1 || d3.compareTo(d4) == 0))
+                if (((d1.compareTo(d2) == -1 || d1.compareTo(d2) == 0) && (d3.compareTo(d4) == 1 || d3.compareTo(d4) == 0)) || (d1.compareTo(d2) == 1 && d1.compareTo(d4) == -1) || (d3.compareTo(d2) == 1 && d3.compareTo(d4) == -1))
                     ilePlanow[i]++;
-                //else
-                    //ilePlanow[i]--;
             }
         }
 
@@ -203,7 +259,7 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
             for (int j = 0; j < lista.size(); j++) {
                 d1 = new CData(lista.get(j).getPLA_Od());
                 d3 = new CData(lista.get(j).getPLA_DataZakupu());
-                if ((d1.compareTo(d2) == -1 || d1.compareTo(d2) == 0) && (d3.compareTo(d4) == 1 || d3.compareTo(d4) == 0))
+                if (((d1.compareTo(d2) == -1 || d1.compareTo(d2) == 0) && (d3.compareTo(d4) == 1 || d3.compareTo(d4) == 0)) || (d1.compareTo(d2) == 1 && d1.compareTo(d4) == -1) || (d3.compareTo(d2) == 1 && d3.compareTo(d4) == -1))
                     tmp = tmp + lista.get(j).getPLA_Cena() / ilePlanow[j];
             }
             kwoty.add(tmp);

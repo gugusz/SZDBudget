@@ -4,11 +4,13 @@
 
     <application
         android:allowBackup="true"
+        android:screenOrientation="portrait"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
             android:name="android.szdb.mbaz.MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,39 +20,43 @@
         </activity>
         <activity
             android:name="android.szdb.mbaz.MenuActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_menu" >
         </activity>
         <activity
             android:name="android.szdb.mbaz.UstawieniaActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_ustawienia" >
         </activity>
         <activity
             android:name="android.szdb.mbaz.DochodyActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_dochody" >
         </activity>
         <activity
             android:name="android.szdb.mbaz.WydatkiActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_wydatki" >
         </activity>
         <activity
             android:name="android.szdb.mbaz.PlanyActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_plany" >
         </activity>
         <activity
             android:name="android.szdb.mbaz.ZestawienieActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_zestawienie" >
         </activity>
         <activity
             android:name="android.szdb.mbaz.WydatkiDodajActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_wydatki_dodaj" >
         </activity>
         <activity
             android:name="android.szdb.mbaz.DochodyDodajActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_dochody_dodaj" >
-        </activity>
-        <activity
-            android:name="android.szdb.mbaz.MainActivity2"
-            android:label="@string/title_activity_main_activity2" >
         </activity>
     </application>
 

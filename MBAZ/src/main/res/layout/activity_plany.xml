@@ -17,7 +17,8 @@
         android:inputType="date"
         android:layout_below="@+id/editTextPlanowanieCo"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true"
+        android:focusable="false" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -28,7 +29,8 @@
         android:layout_below="@+id/editTextPlanyOd"
         android:layout_alignParentStart="true"
         android:hint="@string/editTextPlanyDo"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true"
+        android:focusable="false" />
 
     <EditText
         android:layout_width="wrap_content"

@@ -62,7 +62,8 @@
             android:inputType="date"
             android:ems="10"
             android:id="@+id/editTextUstawieniaOd"
-            android:hint="@string/hintUstawieniaOd"/>
+            android:hint="@string/hintUstawieniaOd"
+            android:focusable="false" />
 
         <EditText
             android:layout_width="match_parent"
@@ -70,7 +71,8 @@
             android:inputType="date"
             android:ems="10"
             android:id="@+id/editTextUstawieniaDo"
-            android:hint="@string/hintUstawieniaDo"/>
+            android:hint="@string/hintUstawieniaDo"
+            android:focusable="false" />
 
         <Button
             android:layout_width="match_parent"
