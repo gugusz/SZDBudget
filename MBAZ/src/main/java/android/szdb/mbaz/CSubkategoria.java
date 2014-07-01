@@ -3,6 +3,7 @@ package android.szdb.mbaz;
 /**
  * Klasa zarzadzajaca danymi subkategorii wydatkow
  * @author Michal Bednarz & Adrian Zyzda
+ * @version 1.0
  */
 public class CSubkategoria {
     private int SUBk_1_Id; //Primary Key

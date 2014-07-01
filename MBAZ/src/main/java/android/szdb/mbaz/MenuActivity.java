@@ -17,7 +17,7 @@ public class MenuActivity extends Activity implements View.OnClickListener{
 
     /**
      * Metoda bedaca w pewnym sensie konstruktorem. Wywolywana jest podczas tworzenia aktywnosci. Przypisuje id kontrolek do pol klasy, ustawia OnClickListenera
-     * @param savedInstanceState
+     * @param savedInstanceState stan instancji
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {

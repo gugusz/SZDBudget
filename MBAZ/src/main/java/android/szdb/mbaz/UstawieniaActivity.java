@@ -34,7 +34,6 @@ public class UstawieniaActivity extends Activity implements View.OnClickListener
 
     private EditText editTextOd;
     private EditText editTextDo;
-    private Button buttonDodaj;
     private ListView listViewUstawienia;
     private CBazaSystem bazaDanych;
     private RadioButton radioButtonOkr;
@@ -55,7 +54,7 @@ public class UstawieniaActivity extends Activity implements View.OnClickListener
     /**
      * Metoda bedaca w pewnym sensie konstruktorem. Wywolywana jest podczas tworzenia aktywnosci. Przypisuje id kontrolek do pol klasy
      * Otwiera baze danych, tworzy ArrayAdapter w ktorym przechowaywane sa rekordy bazy, ustawia OnClickListenera
-     * @param savedInstanceState
+     * @param savedInstanceState stan instancji
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +62,7 @@ public class UstawieniaActivity extends Activity implements View.OnClickListener
         setContentView(R.layout.activity_ustawienia);
         editTextOd = (EditText)findViewById(R.id.editTextUstawieniaOd);
         editTextDo = (EditText)findViewById(R.id.editTextUstawieniaDo);
-        buttonDodaj = (Button) findViewById(R.id.buttonUstawienia);
+        Button buttonDodaj = (Button) findViewById(R.id.buttonUstawienia);
         listViewUstawienia = (ListView)findViewById(R.id.listViewUstawienia);
         radioButtonOkr = (RadioButton)findViewById(R.id.radioButtonUstawieniaOkres);
         radioButtonKDO = (RadioButton)findViewById(R.id.radioButtonUstawieniaKDO);
@@ -295,6 +294,7 @@ public class UstawieniaActivity extends Activity implements View.OnClickListener
     public boolean onContextItemSelected(MenuItem item) {
         if(item.getTitle()=="Usuń wpis") {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            assert info != null;
             int index = info.position;
             if (radioButtonOkr.isChecked()) {
                 bazaDanych.usunOkres(listaOkr.get(index));
@@ -319,6 +319,7 @@ public class UstawieniaActivity extends Activity implements View.OnClickListener
         }
         else if(item.getTitle()=="Edytuj wpis"){
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            assert info != null;
             int index = info.position;
             Toast.makeText(this,String.valueOf(index),Toast.LENGTH_SHORT).show();
         }

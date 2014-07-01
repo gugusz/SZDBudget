@@ -75,7 +75,6 @@ public class CDatabaseManager extends SQLiteOpenHelper{
      */
     public CDatabaseManager(Context context) {
         super(context, DB_NAZWA, null, DB_WERSJA);
-        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -84,7 +83,6 @@ public class CDatabaseManager extends SQLiteOpenHelper{
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // TODO Auto-generated method stub
         db.execSQL(CREATE_TABLE_OKRES);
         db.execSQL(CREATE_TABLE_KDO);
         db.execSQL(CREATE_TABLE_DOCHODY);
@@ -113,13 +111,12 @@ public class CDatabaseManager extends SQLiteOpenHelper{
 
     /**
      * Metoda wywolywana przy aktualizowaniu wersji bazy danych
-     * @param db
-     * @param oldVersion
-     * @param newVersion
+     * @param db instancja bazy danych
+     * @param oldVersion poprzednia wersja
+     * @param newVersion nowa wersja
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // TODO Auto-generated method stub
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_OKRES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_KDO);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_DOCHODY);

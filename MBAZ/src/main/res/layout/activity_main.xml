@@ -11,7 +11,14 @@
     <TextView
         android:text="@string/hello_world"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/textViewMain"
+        android:gravity="center"
+        android:layout_above="@+id/buttonMain"
+        android:textSize="@dimen/abc_dropdownitem_icon_width" />
 
     <Button
         android:layout_width="wrap_content"
@@ -19,6 +26,7 @@
         android:text="@string/buttonMain"
         android:id="@+id/buttonMain"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

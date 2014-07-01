@@ -9,6 +9,13 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import java.util.List;
 
+/**
+ * Wlasny adapter dla aktywnosci Wydatki
+ * Tlumaczy klucze obcy na ciagi znakow zrozumialy dla czlowieka
+ * @author Michal Bednarz & Adrian Zyzda
+ * @version 1.0
+ * @see android.szdb.mbaz.WydatkiActivity
+ */
 public class ArrayWydatkiAdapter extends ArrayAdapter{
     private Context mContext;
     private int mResource;
@@ -16,6 +23,14 @@ public class ArrayWydatkiAdapter extends ArrayAdapter{
     private List<CKat_wyd> kategorie;
     private List<CSubkategoria> subkategorie;
 
+    /**
+     * Konstruktor klasy
+     * @param context kontekst
+     * @param resource wymagany parametr
+     * @param objects Lista z wydatkami
+     * @param objects2 Lista z kategoriami wydatkow
+     * @param objects3 Lista z subkategoriami
+     */
     public ArrayWydatkiAdapter(Context context, int resource, List objects, List objects2, List objects3) {
         super(context, resource, objects);
         this.mContext = context;
@@ -25,6 +40,13 @@ public class ArrayWydatkiAdapter extends ArrayAdapter{
         this.subkategorie = objects3;
     }
 
+    /**
+     * Metoda tworząca widok ktory będzie sie wyswietlal wewnatrz ListView
+     * @param position pozycja
+     * @param convertView widok,ktory storzylismy na potrzeba adaptera
+     * @param parent rodzic widoku
+     * @return Nowo utworzony widok, ktory bedzie widnial w ListView
+     */
     private View createViewFromResource(int position, View convertView, ViewGroup parent) {
         TextView text;
         //LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -47,11 +69,25 @@ public class ArrayWydatkiAdapter extends ArrayAdapter{
         return view;
     }
 
+    /**
+     * Przeciazana metoda, ktora pobiera widok
+     * @param position pozycja
+     * @param convertView nowy widok
+     * @param parent rodzic widoku
+     * @return Nowo utworzony widok
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         return createViewFromResource(position, convertView, parent);
     }
 
+    /**
+     * Przeciazana metoda, ktora pobiera widok po rozwiniecu ListView
+     * @param position pozycja
+     * @param convertView nowy widok
+     * @param parent rodzic widoku
+     * @return Nowo utworzony widok
+     */
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         return createViewFromResource(position, convertView, parent);

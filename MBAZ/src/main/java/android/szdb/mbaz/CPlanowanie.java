@@ -22,14 +22,6 @@ public class CPlanowanie {
 
     /**
      * Getter
-     * @return Nazwa przedmiotu ktore planowanie jest do kupienia
-     */
-    public String getPLA_NazwaPrzedmiotu() {
-        return PLA_NazwaPrzedmiotu;
-    }
-
-    /**
-     * Getter
      * @return Data rozpoczecia oszczedzania
      */
     public String getPLA_Od() {

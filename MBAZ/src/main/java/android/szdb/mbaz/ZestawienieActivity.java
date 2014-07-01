@@ -13,17 +13,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Klasa aktywnosci odpowiadajaca generowaniu zestawiania
+ * @author Michal Bednarz & Adrian Zyzda
+ * @version 1.0
+ * @see android.szdb.mbaz.PieGraph
+ */
 public class ZestawienieActivity extends Activity{
 
     private Spinner okresy;
-    private ListView zestawienie;
     private List<COkres> listaOkres;
-    private ArrayAdapter<COkres> adapterOkres;
     private ArrayZestawienieAdapter adapterZestawienie;
     private CBazaSystem bazaDanych;
     private List<Float> kwoty;
@@ -34,12 +36,18 @@ public class ZestawienieActivity extends Activity{
     private List<CWydatki> Wydatki;
     private List<Integer> kolory;
     private PieGraph pg;
+
+    /**
+     * Przeciazana metoda podobna do konstruktora
+     * Inicjuje wszystkie pola
+     * @param savedInstanceState stan instancji
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zestawienie);
         okresy = (Spinner) findViewById(R.id.spinnerZestawienie);
-        zestawienie = (ListView) findViewById(R.id.listViewZestawienie);
+        ListView zestawienie = (ListView) findViewById(R.id.listViewZestawienie);
         kwoty = new ArrayList<Float>();
         bazaDanych = new CBazaSystem(this);
         bazaDanych.open();
@@ -52,7 +60,7 @@ public class ZestawienieActivity extends Activity{
         Wydatki = bazaDanych.zwrocWydatki();
         listaOkres = bazaDanych.zwrocOkresy();
         obliczBilans();
-        adapterOkres = new ArrayAdapter<COkres>(this, android.R.layout.simple_list_item_1, listaOkres);
+        ArrayAdapter<COkres> adapterOkres = new ArrayAdapter<COkres>(this, android.R.layout.simple_list_item_1, listaOkres);
         okresy.setAdapter(adapterOkres);
         final Context kontekst = this;
         okresy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -147,12 +155,12 @@ public class ZestawienieActivity extends Activity{
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Backbutton event
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MenuActivity.class);
@@ -161,43 +169,49 @@ public class ZestawienieActivity extends Activity{
         finish();
     }
 
+    /**
+     * Metoda obliczajaca bilans wydatkow i dochodow
+     */
     private void obliczBilans() {
         kwoty.clear();
-        CData d1 = new CData(listaOkres.get(okresy.getSelectedItemPosition()).getOKR_Od().toString());
-        CData d2 = new CData(listaOkres.get(okresy.getSelectedItemPosition()).getOKR_Do().toString());
+        CData d1 = new CData(listaOkres.get(okresy.getSelectedItemPosition()).getOKR_Od());
+        CData d2 = new CData(listaOkres.get(okresy.getSelectedItemPosition()).getOKR_Do());
         int tmp;
-        for (int i = 0; i < KDO.size(); i++) {
-            tmp = KDO.get(i).getKDOk_1_Id();
+        for (CKat_doch aKDO : KDO) {
+            tmp = aKDO.getKDOk_1_Id();
             float tmp2 = 0.0f;
-            for (int j = 0; j < Dochody.size(); j++) {
-                CData d3 = new CData(Dochody.get(j).getDOC_Data());
-                if (Dochody.get(j).getKDO_Id() == tmp && (d1.compareTo(d3) == -1 || d1.compareTo(d3) == 0) && (d2.compareTo(d3) == 1 || d2.compareTo(d3) == 0))
-                    tmp2 = tmp2 + Dochody.get(j).getDOC_Kwota();
+            for (CDochody aDochody : Dochody) {
+                CData d3 = new CData(aDochody.getDOC_Data());
+                if (aDochody.getKDO_Id() == tmp && (d1.compareTo(d3) == -1 || d1.compareTo(d3) == 0) && (d2.compareTo(d3) == 1 || d2.compareTo(d3) == 0))
+                    tmp2 = tmp2 + aDochody.getDOC_Kwota();
             }
             kwoty.add(tmp2);
         }
-        for (int i = 0; i < KWY.size(); i++) {
-            tmp = KWY.get(i).getKWYk_1_Id();
+        for (CKat_wyd aKWY : KWY) {
+            tmp = aKWY.getKWYk_1_Id();
             float tmp2 = 0.0f;
-            for (int j = 0; j < Wydatki.size(); j++) {
-                CData d3 = new CData(Wydatki.get(j).getWYD_Data());
-                if (Wydatki.get(j).getKWY_Id() == tmp && (d1.compareTo(d3) == -1 || d1.compareTo(d3) == 0) && (d2.compareTo(d3) == 1 || d2.compareTo(d3) == 0))
-                    tmp2 = tmp2 + Wydatki.get(j).getWYD_Kwota();
+            for (CWydatki aWydatki : Wydatki) {
+                CData d3 = new CData(aWydatki.getWYD_Data());
+                if (aWydatki.getKWY_Id() == tmp && (d1.compareTo(d3) == -1 || d1.compareTo(d3) == 0) && (d2.compareTo(d3) == 1 || d2.compareTo(d3) == 0))
+                    tmp2 = tmp2 + aWydatki.getWYD_Kwota();
             }
             kwoty.add(tmp2);
         }
-        for (int i = 0; i < SUB.size(); i++) {
-            tmp = SUB.get(i).getSUBk_1_Id();
+        for (CSubkategoria aSUB : SUB) {
+            tmp = aSUB.getSUBk_1_Id();
             float tmp2 = 0.0f;
-            for (int j = 0; j < Wydatki.size(); j++) {
-                CData d3 = new CData(Wydatki.get(j).getWYD_Data());
-                if (Wydatki.get(j).getSUB_Id() == tmp && (d1.compareTo(d3) == -1 || d1.compareTo(d3) == 0) && (d2.compareTo(d3) == 1 || d2.compareTo(d3) == 0))
-                    tmp2 = tmp2 + Wydatki.get(j).getWYD_Kwota();
+            for (CWydatki aWydatki : Wydatki) {
+                CData d3 = new CData(aWydatki.getWYD_Data());
+                if (aWydatki.getSUB_Id() == tmp && (d1.compareTo(d3) == -1 || d1.compareTo(d3) == 0) && (d2.compareTo(d3) == 1 || d2.compareTo(d3) == 0))
+                    tmp2 = tmp2 + aWydatki.getWYD_Kwota();
             }
             kwoty.add(tmp2);
         }
     }
 
+    /**
+     * Metoda aktualizujaca wykres
+     */
     public void updateGraph() {
         Resources resources = getResources();
         pg.removeSlices();

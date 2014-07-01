@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,28 +20,26 @@ import java.util.List;
  */
 public class DochodyActivity extends Activity implements View.OnCreateContextMenuListener{
 
-    private ListView listViewDochody;
     private CBazaSystem bazaDanych;
     private List<CDochody> lista;
     private ArrayDochodyAdapter adapter;
-    private List<CKat_doch> kategorie;
 
     /**
      * Metoda bedaca w pewnym sensie konstruktorem. Wywolywana jest podczas tworzenia aktywnosci. Przypisuje id kontrolek do pol klasy
      * Otwiera baze danych, tworzy ArrayAdapter w ktorym przechowaywane sa rekordy bazy
-     * @param savedInstanceState
+     * @param savedInstanceState stan instancji
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dochody);
-        listViewDochody = (ListView)findViewById(R.id.listViewDochody);
+        ListView listViewDochody = (ListView) findViewById(R.id.listViewDochody);
         registerForContextMenu(listViewDochody);
 
         bazaDanych = new CBazaSystem(this);
         bazaDanych.open();
 
-        kategorie = bazaDanych.zwrocKDO();
+        List<CKat_doch> kategorie = bazaDanych.zwrocKDO();
         lista = bazaDanych.zwrocDochody();
         adapter = new ArrayDochodyAdapter(this, R.layout.textview_adapter, lista, kategorie);
         listViewDochody.setAdapter(adapter);
@@ -95,6 +92,7 @@ public class DochodyActivity extends Activity implements View.OnCreateContextMen
     public boolean onContextItemSelected(MenuItem item) {
         if(item.getTitle()=="Usuń wpis") {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            assert info != null;
             int index = info.position;
             bazaDanych.usunDochody(lista.get(index));
             lista.remove(index);
@@ -102,6 +100,7 @@ public class DochodyActivity extends Activity implements View.OnCreateContextMen
         }
         else if(item.getTitle()=="Edytuj wpis"){
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            assert info != null;
             int index = info.position;
             Toast.makeText(this,String.valueOf(index),Toast.LENGTH_SHORT).show();
         }

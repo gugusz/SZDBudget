@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,30 +20,27 @@ import java.util.List;
  */
 public class WydatkiActivity extends Activity {
 
-    private ListView listViewWydatki;
     private CBazaSystem bazaDanych;
     private List<CWydatki> lista;
     private ArrayWydatkiAdapter adapter;
-    private List<CKat_wyd> kategorie;
-    private List<CSubkategoria> subkategoria;
 
     /**
      * Metoda bedaca w pewnym sensie konstruktorem. Wywolywana jest podczas tworzenia aktywnosci. Przypisuje id kontrolek do pol klasy
      * Otwiera baze danych, tworzy ArrayAdapter w ktorym przechowaywane sa rekordy bazy,
-     * @param savedInstanceState
+     * @param savedInstanceState stan instancji
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wydatki);
-        listViewWydatki = (ListView)findViewById(R.id.listViewWydatki);
+        ListView listViewWydatki = (ListView) findViewById(R.id.listViewWydatki);
         registerForContextMenu(listViewWydatki);
 
         bazaDanych = new CBazaSystem(this);
         bazaDanych.open();
 
-        kategorie = bazaDanych.zwrocKWY();
-        subkategoria = bazaDanych.zwrocSubkategorie();
+        List<CKat_wyd> kategorie = bazaDanych.zwrocKWY();
+        List<CSubkategoria> subkategoria = bazaDanych.zwrocSubkategorie();
         lista = bazaDanych.zwrocWydatki();
         adapter = new ArrayWydatkiAdapter(this, R.layout.textview_adapter, lista, kategorie, subkategoria);
         listViewWydatki.setAdapter(adapter);
@@ -64,10 +60,7 @@ public class WydatkiActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -101,6 +94,7 @@ public class WydatkiActivity extends Activity {
     public boolean onContextItemSelected(MenuItem item) {
         if(item.getTitle()=="Usuń wpis") {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            assert info != null;
             int index = info.position;
             bazaDanych.usunWydatki(lista.get(index));
             lista.remove(index);
@@ -108,6 +102,7 @@ public class WydatkiActivity extends Activity {
         }
         else if(item.getTitle()=="Edytuj wpis"){
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            assert info != null;
             int index = info.position;
             Toast.makeText(this, String.valueOf(index), Toast.LENGTH_SHORT).show();
         }

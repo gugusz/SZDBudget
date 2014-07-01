@@ -3,9 +3,15 @@ package android.szdb.mbaz;
 import android.graphics.Color;
 
 /**
- * Created by Adrian Zyzda on 2014-07-01 Adrian.
+ * Klasa poocnicza do zarzadania kolorami
+ * @version 1.0
  */
 public class Utils {
+    /**
+     * Statyczna meotda przyciemnajaca kolor
+     * @param color
+     * @return przyciemniony kolor
+     */
     public static int darkenColor(int color) {
         float[] hsv = new float[3];
         Color.colorToHSV(color, hsv);

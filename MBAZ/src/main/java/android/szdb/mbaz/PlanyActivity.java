@@ -34,12 +34,10 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
     private EditText od;
     private EditText dataZakupu;
     private EditText cena;
-    private Button buttonDodaj;
     private CBazaSystem bazaDanych;
     private ListView listaViewPlany;
     private List<CPlanowanie> lista;
     private ArrayAdapter<CPlanowanie> adapter;
-    private Spinner spinnerPlany;
     private ArrayPlanyAdapter adapterPlany;
     private List<COkres> okresy;
     private List<Float> kwoty;
@@ -49,7 +47,7 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
     /**
      * Metoda bedaca w pewnym sensie konstruktorem. Wywolywana jest podczas tworzenia aktywnosci. Przypisuje id kontrolek do pol klasy
      * Otwiera baze danych, tworzy ArrayAdapter w ktorym przechowaywane sa rekordy bazy, ustawia OnClickListenera
-     * @param savedInstanceState
+     * @param savedInstanceState stan instancji
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +57,9 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
         od = (EditText)findViewById(R.id.editTextPlanyOd);
         dataZakupu = (EditText)findViewById(R.id.editTextPlanyDo);
         cena = (EditText)findViewById(R.id.editTextPlanyCena);
-        buttonDodaj = (Button)findViewById(R.id.buttonPlanyDodaj);
+        Button buttonDodaj = (Button) findViewById(R.id.buttonPlanyDodaj);
         listaViewPlany = (ListView) findViewById(R.id.listViewPlany);
-        spinnerPlany = (Spinner) findViewById(R.id.spinnerPlany);
+        Spinner spinnerPlany = (Spinner) findViewById(R.id.spinnerPlany);
 
         bazaDanych = new CBazaSystem(this);
         bazaDanych.open();
@@ -134,10 +132,7 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -165,7 +160,7 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
                     break;
                 }
                 else if (tmp1.compareTo(tmp2) == -1) {
-                    Toast.makeText(this, tmp1.getData().toString() + " Zanim dodasz plan, uzupełnij okresy!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, tmp1.getData() + " Zanim dodasz plan, uzupełnij okresy!", Toast.LENGTH_LONG).show();
                     break;
                 }
                 else if (tmp3.compareTo(tmp2) == 1) {
@@ -219,6 +214,7 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
     public boolean onContextItemSelected(MenuItem item) {
         if(item.getTitle()=="Usuń wpis") {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            assert info != null;
             int index = info.position;
                 bazaDanych.usunPlan(lista.get(index));
                 lista.remove(index);
@@ -226,6 +222,7 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
         }
         else if(item.getTitle()=="Edytuj wpis"){
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            assert info != null;
             int index = info.position;
             Toast.makeText(this,String.valueOf(index),Toast.LENGTH_SHORT).show();
         }
@@ -242,19 +239,18 @@ public class PlanyActivity extends Activity implements View.OnClickListener{
             d1 = new CData(lista.get(i).getPLA_Od());
             d3 = new CData(lista.get(i).getPLA_DataZakupu());
 
-            for (int j = 0; j < okresy.size(); j++)
-            {
-                d2 = new CData(okresy.get(j).getOKR_Od());
-                d4 = new CData(okresy.get(j).getOKR_Do());
+            for (COkres anOkresy : okresy) {
+                d2 = new CData(anOkresy.getOKR_Od());
+                d4 = new CData(anOkresy.getOKR_Do());
                 if (((d1.compareTo(d2) == -1 || d1.compareTo(d2) == 0) && (d3.compareTo(d4) == 1 || d3.compareTo(d4) == 0)) || (d1.compareTo(d2) == 1 && d1.compareTo(d4) == -1) || (d3.compareTo(d2) == 1 && d3.compareTo(d4) == -1))
                     ilePlanow[i]++;
             }
         }
 
-        for (int i = 0; i < okresy.size(); i++) {
+        for (COkres anOkresy : okresy) {
             float tmp = 0.0f;
-            d2 = new CData(okresy.get(i).getOKR_Od());
-            d4 = new CData(okresy.get(i).getOKR_Do());
+            d2 = new CData(anOkresy.getOKR_Od());
+            d4 = new CData(anOkresy.getOKR_Do());
             for (int j = 0; j < lista.size(); j++) {
                 d1 = new CData(lista.get(j).getPLA_Od());
                 d3 = new CData(lista.get(j).getPLA_DataZakupu());

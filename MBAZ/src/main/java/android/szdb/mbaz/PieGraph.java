@@ -16,7 +16,8 @@ import android.view.View;
 import java.util.ArrayList;
 
 /**
- * Created by Adrian Zyzda on 2014-07-01 Adrian.
+ * Metoda tworzaca wykres kolowy
+ * @version 1.0
  */
 public class PieGraph extends View {
 
@@ -29,14 +30,29 @@ public class PieGraph extends View {
     private boolean mDrawCompleted = false;
     private RectF mRectF = new RectF();
 
+    /**
+     * Konstruktor
+     * @param context kontekst
+     */
     public PieGraph(Context context) {
         super(context);
     }
 
+    /**
+     * Konstruktor
+     * @param context kontekst
+     * @param attrs zestaw atrybutow
+     */
     public PieGraph(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
+    /**
+     * Konstruktor
+     * @param context kontekst
+     * @param attrs zestaw atrybutow
+     * @param defStyle style
+     */
     public PieGraph(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs);
 
@@ -45,6 +61,10 @@ public class PieGraph extends View {
         mPadding = a.getDimensionPixelSize(R.styleable.PieGraph_pieSlicePadding, 0);
     }
 
+    /**
+     * Metoda rysujaca wykres
+     * @param canvas kontrolka plotno na ktorej bedzie rysowany wykres
+     */
     public void onDraw(Canvas canvas) {
         float midX, midY, radius, innerRadius;
 
@@ -105,6 +125,11 @@ public class PieGraph extends View {
         mDrawCompleted = true;
     }
 
+    /**
+     * Nadpisana event dotkniecia wykresu
+     * @param event event
+     * @return wartosc boolowska
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (mDrawCompleted) {
@@ -145,43 +170,78 @@ public class PieGraph extends View {
         return true;
     }
 
+    /**
+     * Setter odstepu pomiedzy kawalkami wykresu
+     * @param padding warosc odstepu
+     */
     public void setPadding(int padding) {
         mPadding = padding;
         postInvalidate();
     }
 
+    /**
+     * Setter wielkosci dzury w wykresie
+     * @param innerCircleRatio promien dziury
+     */
     public void setInnerCircleRatio(int innerCircleRatio) {
         mInnerCircleRatio = innerCircleRatio;
         postInvalidate();
     }
 
+    /**
+     * getter
+     * @return lista kawalkow wykresu
+     */
     public ArrayList<PieSlice> getSlices() {
         return mSlices;
     }
 
+    /**
+     * Setter kawalkow wykresu
+     * @param slices kawalek wykresu
+     */
     public void setSlices(ArrayList<PieSlice> slices) {
         mSlices = slices;
         postInvalidate();
     }
 
+    /**
+     * Getter kawalka wykresu
+     * @param index numer kawalka
+     * @return kawalek wykresu
+     */
     public PieSlice getSlice(int index) {
         return mSlices.get(index);
     }
 
+    /**
+     * Metoda dodajaca kawalek wykreu do wykresu
+     * @param slice
+     */
     public void addSlice(PieSlice slice) {
         mSlices.add(slice);
         postInvalidate();
     }
 
+    /**
+     * Metoda ustawiajaca OnSliceClickedListener
+     * @param listener listerner
+     */
     public void setOnSliceClickedListener(OnSliceClickedListener listener) {
         mListener = listener;
     }
 
+    /**
+     * Metoda usuwajaca wszystkie kawalki wykresu z wykresu
+     */
     public void removeSlices() {
         mSlices.clear();
         postInvalidate();
     }
 
+    /**
+     * Interfejs OnSliceClickedListenera
+     */
     public interface OnSliceClickedListener {
         public abstract void onClick(int index);
     }
