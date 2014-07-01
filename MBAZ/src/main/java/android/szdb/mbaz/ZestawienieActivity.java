@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -33,6 +32,8 @@ public class ZestawienieActivity extends Activity{
     private List<CSubkategoria> SUB;
     private List<CDochody> Dochody;
     private List<CWydatki> Wydatki;
+    private List<Integer> kolory;
+    private PieGraph pg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +60,7 @@ public class ZestawienieActivity extends Activity{
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 obliczBilans();
                 adapterZestawienie.notifyDataSetChanged();
+                updateGraph();
             }
 
             @Override
@@ -69,29 +71,64 @@ public class ZestawienieActivity extends Activity{
 
         adapterZestawienie = new ArrayZestawienieAdapter(this, R.layout.textview2_adapter, kwoty, KDO, KWY, SUB);
         zestawienie.setAdapter(adapterZestawienie);
+        Resources resources = getResources();
+        kolory = new ArrayList<Integer>();
+        kolory.add(resources.getColor(R.color.Tomato));
+        kolory.add(resources.getColor(R.color.blue));
+        kolory.add(resources.getColor(R.color.transparent_blue));
+        kolory.add(resources.getColor(R.color.green));
+        kolory.add(resources.getColor(R.color.green_light));
+        kolory.add(resources.getColor(R.color.orange));
+        kolory.add(resources.getColor(R.color.transparent_orange));
+        kolory.add(resources.getColor(R.color.purple));
+        kolory.add(resources.getColor(R.color.yellow));
+        kolory.add(resources.getColor(R.color.fushia));
+        kolory.add(resources.getColor(R.color.lime));
+        kolory.add(resources.getColor(R.color.navy));
+        kolory.add(resources.getColor(R.color.IndianRed));
+        kolory.add(resources.getColor(R.color.SeaGreen));
+        kolory.add(resources.getColor(R.color.Wheat));
+        kolory.add(resources.getColor(R.color.Violet));
+        kolory.add(resources.getColor(R.color.red));
+        kolory.add(resources.getColor(R.color.SlateGray));
+        kolory.add(resources.getColor(R.color.PaleGreen));
+        kolory.add(resources.getColor(R.color.DodgerBlue));
 
-        final Resources resources = getResources();
-        final PieGraph pg = (PieGraph) findViewById(R.id.pieGraphZestawienie);
-        PieSlice slice = new PieSlice();
-        slice.setColor(resources.getColor(R.color.green_light));
-        slice.setSelectedColor(resources.getColor(R.color.transparent_orange));
-        slice.setValue(2);
-        pg.addSlice(slice);
-        slice = new PieSlice();
-        slice.setColor(resources.getColor(R.color.orange));
-        slice.setValue(3);
-        pg.addSlice(slice);
-        slice = new PieSlice();
-        slice.setColor(resources.getColor(R.color.purple));
-        slice.setValue(8);
-        pg.addSlice(slice);
+        pg = (PieGraph) findViewById(R.id.pieGraphZestawienie);
+        updateGraph();
         pg.setInnerCircleRatio(120);
-        pg.setPadding(10);
+        pg.setPadding(5);
         pg.setOnSliceClickedListener(new PieGraph.OnSliceClickedListener() {
 
             @Override
             public void onClick(int index) {
-                Toast.makeText(getApplicationContext(),"Slice " + index + " clicked",Toast.LENGTH_SHORT).show();
+                int max = KDO.size();
+                int i = 0;
+                int j = 0;
+                for (; i < max; i++) {
+                    if (kwoty.get(i) == 0.0f)
+                        continue;
+                    if (index == j)
+                        Toast.makeText(getApplicationContext(),KDO.get(i).toString() + " " + String.valueOf(kwoty.get(i)),Toast.LENGTH_SHORT).show();
+                    j++;
+                }
+                max += KWY.size();
+                for (; i < max; i++) {
+                    if (kwoty.get(i) == 0.0f)
+                        continue;
+                    if (index == j)
+                        Toast.makeText(getApplicationContext(),KWY.get(i - KDO.size()).toString() + " -" + String.valueOf(kwoty.get(i)),Toast.LENGTH_SHORT).show();
+                    j++;
+                }
+                /*
+                max += SUB.size();
+                for (; i < max; i++) {
+                    if (kwoty.get(i) == 0.0f)
+                        continue;
+                    if (index == i)
+                        Toast.makeText(getApplicationContext(), SUB.get(i).toString() + " -" + String.valueOf(kwoty.get(i)), Toast.LENGTH_SHORT).show();
+                    j++;
+                }*/
             }
         });
     }
@@ -158,6 +195,19 @@ public class ZestawienieActivity extends Activity{
                     tmp2 = tmp2 + Wydatki.get(j).getWYD_Kwota();
             }
             kwoty.add(tmp2);
+        }
+    }
+
+    public void updateGraph() {
+        Resources resources = getResources();
+        pg.removeSlices();
+        for (int i = 0; i < KDO.size() + KWY.size(); i++) {
+            PieSlice slice = new PieSlice();
+            slice.setColor(kolory.get(i % 20));
+            slice.setSelectedColor(resources.getColor(R.color.highlight));
+            slice.setValue(kwoty.get(i));
+            if (slice.getValue() != 0.0f)
+                pg.addSlice(slice);
         }
     }
 }
