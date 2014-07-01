@@ -3,6 +3,7 @@ package android.szdb.mbaz;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -67,6 +69,31 @@ public class ZestawienieActivity extends Activity{
 
         adapterZestawienie = new ArrayZestawienieAdapter(this, R.layout.textview2_adapter, kwoty, KDO, KWY, SUB);
         zestawienie.setAdapter(adapterZestawienie);
+
+        final Resources resources = getResources();
+        final PieGraph pg = (PieGraph) findViewById(R.id.pieGraphZestawienie);
+        PieSlice slice = new PieSlice();
+        slice.setColor(resources.getColor(R.color.green_light));
+        slice.setSelectedColor(resources.getColor(R.color.transparent_orange));
+        slice.setValue(2);
+        pg.addSlice(slice);
+        slice = new PieSlice();
+        slice.setColor(resources.getColor(R.color.orange));
+        slice.setValue(3);
+        pg.addSlice(slice);
+        slice = new PieSlice();
+        slice.setColor(resources.getColor(R.color.purple));
+        slice.setValue(8);
+        pg.addSlice(slice);
+        pg.setInnerCircleRatio(120);
+        pg.setPadding(10);
+        pg.setOnSliceClickedListener(new PieGraph.OnSliceClickedListener() {
+
+            @Override
+            public void onClick(int index) {
+                Toast.makeText(getApplicationContext(),"Slice " + index + " clicked",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

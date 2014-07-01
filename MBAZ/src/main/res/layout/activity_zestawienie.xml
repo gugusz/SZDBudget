@@ -21,54 +21,11 @@
         android:id="@+id/listViewZestawienie"
         android:layout_below="@+id/spinnerZestawienie"
         android:layout_alignParentStart="true" />
-
-    <TabHost
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/tabHostZestawienie"
+    <android.szdb.mbaz.PieGraph
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/pieGraphZestawienie"
         android:layout_below="@+id/listViewZestawienie"
-        android:layout_alignParentStart="true">
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
-
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:tabStripEnabled="false"></TabWidget>
-
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-
-                <LinearLayout
-                    android:id="@+id/tab1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:orientation="horizontal">
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tab2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:orientation="horizontal">
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tab3"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:orientation="horizontal"></LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
-    </TabHost>
+        android:layout_marginTop="10dp"/>
 
 </RelativeLayout>
